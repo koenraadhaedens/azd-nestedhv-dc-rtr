@@ -16,9 +16,15 @@ $outputPath = Join-Path -Path $iso -ChildPath "WindowsServer2022.iso"
 
 Invoke-WebRequest -Uri $downloadUrl -OutFile $outputPath
 
+# Register task to run post-reboot script once host is rebooted after Hyper-V install
+Write-Output "Register post-reboot script as scheduled task"
+$action = New-ScheduledTaskAction -Execute "C:\Windows\System32\WindowsPowerShell\v1.0\Powershell.exe" -Argument "-executionPolicy Unrestricted -File $opsDir\PostRebootConfigure.ps1"
+$trigger = New-ScheduledTaskTrigger -AtStartup
+$principal = New-ScheduledTaskPrincipal -UserID "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
+Register-ScheduledTask -TaskName "SetUpVMs" -Action $action -Trigger $trigger -Principal $principal
 
 
 # Install Hyper-V feature
 Write-Output "Install Hyper-V and restart"
 Stop-Transcript
-Install-WindowsFeature -Name Hyper-V -IncludeManagementTools -restart
+Install-WindowsFeature -Name Hyper-V -IncludeManagementTools -Restart
