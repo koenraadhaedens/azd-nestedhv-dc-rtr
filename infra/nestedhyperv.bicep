@@ -299,7 +299,7 @@ resource customScriptExtension 'Microsoft.Compute/virtualMachines/extensions@202
     typeHandlerVersion: '1.10'
     settings: {
       fileUris: [
-        'https://raw.githubusercontent.com/yourusername/yourrepo/main/customscript.ps1'
+        'https://raw.githubusercontent.com/koenraadhaedens/azd-nestedhv-dc-rtr/refs/heads/main/infra/customscript.ps1'
       ]
       commandToExecute: 'powershell -ExecutionPolicy Unrestricted -File customscript.ps1'
     }
