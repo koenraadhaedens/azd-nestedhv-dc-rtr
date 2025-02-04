@@ -291,6 +291,7 @@ resource winVmStorage 'Microsoft.Storage/storageAccounts@2019-06-01' = {
 
 resource customScriptExtension 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
   name: 'customScriptExtension'
+  location: location
   parent: winhvhost
   properties: {
     publisher: 'Microsoft.Compute'
@@ -298,7 +299,7 @@ resource customScriptExtension 'Microsoft.Compute/virtualMachines/extensions@202
     typeHandlerVersion: '1.10'
     settings: {
       fileUris: [
-        'https://raw.githubusercontent.com/koenraadhaedens/AZD-NESTED-DC-RTR/main/customscript.ps1'
+        'https://raw.githubusercontent.com/yourusername/yourrepo/main/customscript.ps1'
       ]
       commandToExecute: 'powershell -ExecutionPolicy Unrestricted -File customscript.ps1'
     }
