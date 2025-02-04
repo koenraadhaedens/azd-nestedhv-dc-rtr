@@ -49,6 +49,7 @@ resource hostvnet 'Microsoft.Network/virtualNetworks@2019-11-01' = {
 resource hostvnet_mgmtSubnet 'Microsoft.Network/virtualNetworks/subnets@2019-11-01' = {
   parent: hostvnet
   name: mgmtSubnetName
+  location: location
   properties: {
     addressPrefix: mgmtSubnetPrefix
   }
@@ -247,7 +248,6 @@ resource winNsg 'Microsoft.Network/networkSecurityGroups@2019-11-01' = {
 resource winhvhostPublicIp 'Microsoft.Network/publicIPAddresses@2019-11-01' = {
   sku: {
     name: 'Standard'
-    tier: 'Regional'
   }
   name: winhvhostPublicIpName
   location: location
@@ -264,7 +264,6 @@ resource winhvhostPublicIp 'Microsoft.Network/publicIPAddresses@2019-11-01' = {
 resource winVmStorage 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   sku: {
     name: 'Standard_GRS'
-    tier: 'Standard'
   }
   kind: 'Storage'
   name: winVmStorageName
