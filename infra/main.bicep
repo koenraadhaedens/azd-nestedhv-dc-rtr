@@ -28,7 +28,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   tags: tags
 }
 
-module hvhost './nestedhypev.bicep' = {
+module hvhost './nestedhyperv.bicep' = {
   scope: rg
   name: 'hvhost'
   params: {
