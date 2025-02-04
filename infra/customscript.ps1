@@ -11,9 +11,9 @@ New-Item -Path $iso -ItemType directory -Force
 
 
 # download windows server 2022 eval version iso
-$downloadUrl = "https://go.microsoft.com/fwlink/p/?LinkID=2195280&clcid=0x409&culture=en-us&country=US"
-$outputPath = Join-Path -Path $iso -ChildPath "WindowsServer2022.iso"
-Invoke-WebRequest -Uri $downloadUrl -OutFile $outputPath
+# $downloadUrl = "https://go.microsoft.com/fwlink/p/?LinkID=2195280&clcid=0x409&culture=en-us&country=US"
+# $outputPath = Join-Path -Path $iso -ChildPath "WindowsServer2022.iso"
+# Invoke-WebRequest -Uri $downloadUrl -OutFile $outputPath
 
 # Download PostReboot script
 $downloadUrl = "https://raw.githubusercontent.com/koenraadhaedens/azd-nestedhv-dc-rtr/refs/heads/main/infra/PostRebootConfigure.ps1"
