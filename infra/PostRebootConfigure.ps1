@@ -1,3 +1,5 @@
+Start-Sleep -Seconds 60
+
 Start-Transcript -Path "C:\PostRebootConfigure_log.txt"
 $cmdLogPath = "C:\PostRebootConfigure_log_cmd.txt"
 
