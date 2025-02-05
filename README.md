@@ -8,10 +8,10 @@ Before proceeding on local pc, ensure you have one of the following environment 
 You can also use Azure Cloud Shell where AZD is preinstalled
 - [Azure Cloud Shell](https://shell.azure.com)
   
- - Ensure the required VM SKU is available in the chosen region by running:
-   ```sh
-   az vm list-skus --query "[?name=='Standard_D8s_v3'].[name, locations]" --output table
-   ```
+- Ensure the required VM SKU is available in the chosen region by running:
+ ```sh
+ az vm list-skus --query "[?name=='Standard_D8s_v3'].[name, locations]" --output table
+ ```
 
 ## Installation Steps
 
