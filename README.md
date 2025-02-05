@@ -47,4 +47,5 @@ Once the setup is complete:
    azd down
    ```
 
+
 For any issues, refer to the Azure documentation or open an issue in the repository.
