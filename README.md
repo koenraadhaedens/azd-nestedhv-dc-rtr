@@ -42,4 +42,9 @@ Once the setup is complete:
 - Login to the VM.
 - Choose a scenario or install VMs within the nested hypervisor as needed.
 
+## Cleaning Up
+   ```sh
+   azd down
+   ```
+
 For any issues, refer to the Azure documentation or open an issue in the repository.
