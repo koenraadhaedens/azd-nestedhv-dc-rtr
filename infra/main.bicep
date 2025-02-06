@@ -35,7 +35,7 @@ module hvhost './nestedhyperv.bicep' = {
     environmentName: environmentName
     location: location
     tags: tags
-    winVmDnsPrefix: '${uniqueString(subscription().subscriptionId, 'rg-${environmentName}')}hvhostvm'
+    winVmDnsPrefix: 'dns${uniqueString(subscription().subscriptionId, 'rg-${environmentName}')}hvhostvm'
     winVmUser: 'adminuser'
     winVmPassword: winVMPassword //no value specified, so user will get prompted for it during deployment
   }
