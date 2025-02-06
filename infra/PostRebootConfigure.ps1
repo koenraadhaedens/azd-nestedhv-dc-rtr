@@ -22,6 +22,77 @@ New-NetIPAddress -IPAddress 172.33.0.1 -PrefixLength 24 -InterfaceIndex $adapter
 Write-Output "Enable Enhanced Session Mode"
 Set-VMHost -EnableEnhancedSessionMode $true
 
+# create scenario script 
+
+@'
+# Define functions for each scenario
+function Download-Server2022EvalISO {
+    Write-Output "Downloading Windows Server 2022 Evaluation ISO..."
+    # Add your script logic here
+    $webClient = New-Object System.Net.WebClient
+    $url = "https://go.microsoft.com/fwlink/p/?LinkID=2195280&clcid=0x409&culture=en-us&country=US"
+    $output = "C:\Path\To\Download\File.iso"
+    $webClient.DownloadFile($url, $output)
+}
+
+function Deploy-RouterVM {
+    Write-Output "Downloading and deploying Router VM..."
+    # Add your script logic here
+    Write-Output "under construction"
+}
+
+function Deploy-DomainControllerVM {
+    Write-Output "Downloading and deploying Domain Controller VM..."
+    # Add your script logic here
+    Write-Output "under construction"
+}
+
+function Deploy-SQLServerVM {
+    Write-Output "Downloading and deploying SQL Server VM..."
+    # Add your script logic here
+    Write-Output "under construction"
+}
+
+# Display menu
+Write-Output "Please choose a scenario:"
+Write-Output "1) Download Windows Server 2022 Evaluation ISO"
+Write-Output "2) Download and Deploy Router VM"
+Write-Output "3) Download and Deploy Domain Controller VM"
+Write-Output "4) Download and Deploy SQL Server VM"
+
+# Get user input
+$choice = Read-Host "Enter the number of your choice"
+
+# Execute the corresponding function based on the user's choice
+switch ($choice) {
+    1 { Download-Server2022EvalISO }
+    2 { Deploy-RouterVM }
+    3 { Deploy-DomainControllerVM }
+    4 { Deploy-SQLServerVM }
+    default { Write-Output "Invalid choice. Please run the script again and choose a valid option." }
+}
+'@ | Out-File -FilePath "C:\OpsDir\scenarioscript.ps1"
+
+# Create schortcut on desktop for scenaio choise
+# Parameters
+$scriptPath = "C:\OpsDir\scenarioscript.ps1"
+$shortcutPath = [System.IO.Path]::Combine([Environment]::GetFolderPath("Desktop"), "choose_scenario.lnk")
+
+# Create WScript.Shell COM Object
+$wshShell = New-Object -ComObject WScript.Shell
+
+# Create Shortcut
+$shortcut = $wshShell.CreateShortcut($shortcutPath)
+$shortcut.TargetPath = "powershell.exe"
+$shortcut.Arguments = "-File `"$scriptPath`""
+$shortcut.WorkingDirectory = "C:\OpsDir"
+$shortcut.Save()
+
+Write-Output "Shortcut created at: $shortcutPath"
+
+
+
+
 
 
 Stop-Transcript
