@@ -28,6 +28,7 @@ You can also use Azure Cloud Shell where AZD is preinstalled
    azd provision
    ```
 4. **Select the Required Options**
+5. - Enter a new environment name (Will be the name of the Resource Group to rg-<nameofenv>)
    - Choose the Azure subscription.
    - Select the region.
    - Provide a password for the VM.
