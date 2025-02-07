@@ -17,7 +17,7 @@ Upon deploying the ONPREM-RTR VM, the next step is to install a "local network g
 - **Public IP Address:** [Public IP of the nested hypervisor]
 - **Address Spaces:** 172.33.0.0/24
 
-![Local Network Deploy demo screenshot](.\demoguide-s2svpn\media\Screenshot-create-lng.png)
+![Local Network Deploy demo screenshot](https://github.com/koenraadhaedens/azd-nestedhv-dc-rtr/blob/main/demoguide-s2svpn/media/Screenshot-create-lng.png)
 
 ### Step 4: Create the S2S VPN Tunnel
 With the local network gateway in place, you can now create the S2S VPN tunnel on the installed Virtual Network Gateway. Follow these steps:
