@@ -41,6 +41,7 @@ You can also use Azure Cloud Shell where AZD is preinstalled
 ## Post Installation
 
 Once the setup is complete:
+- Create NSG rue to allow only your client ip or use JIT
 - Login to the VM.
 - Choose a scenario or install VMs within the nested hypervisor as needed.
 
@@ -48,6 +49,7 @@ Once the setup is complete:
    ```sh
    azd down
    ```
+
 
 
 For any issues, refer to the Azure documentation or open an issue in the repository.
