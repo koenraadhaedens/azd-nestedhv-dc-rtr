@@ -25,6 +25,11 @@ With the local network gateway in place, you can now create the S2S VPN tunnel o
 2. Select the newly created local network gateway.
 3. Assign a shared key for the VPN tunnel.
 
+![create s2s demo screenshot](https://github.com/koenraadhaedens/azd-nestedhv-dc-rtr/blob/main/demoguide-s2svpn/media/Screenshots2svpninazure.png)
+
+![create s2s settings demo screenshot](https://github.com/koenraadhaedens/azd-nestedhv-dc-rtr/blob/main/demoguide-s2svpn/media/Screenshots2svpninazuresettings.png)
+
+
 ### Step 5: Configure the ONPREM-RTR VM
 After creating the VPN tunnel, go to the ONPREM-RTR VM and follow these steps:
 1. Open Server Manager.
