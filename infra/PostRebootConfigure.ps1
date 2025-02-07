@@ -31,7 +31,7 @@ function Download-Server2022EvalISO {
     # Add your script logic here
     $webClient = New-Object System.Net.WebClient
     $url = "https://go.microsoft.com/fwlink/p/?LinkID=2195280&clcid=0x409&culture=en-us&country=US"
-    $output = "C:\Path\To\Download\File.iso"
+    $output = "C:\iso\winserver2022eval.iso"
     $webClient.DownloadFile($url, $output)
 }
 
@@ -39,6 +39,16 @@ function Deploy-RouterVM {
     Write-Output "Downloading and deploying Router VM..."
     # Add your script logic here
     Write-Output "under construction"
+       Write-Output "Downloading and deploying Router VM..."
+    # Add your script logic here
+    Write-Output "dowloading vm to c:\import folder. Please wait until the prompt returns"
+  
+    $webClient = New-Object System.Net.WebClient
+    $url = "https://sagithubdemokhd.blob.core.windows.net/public/ONPREM-RTR.zip"
+    $output = "C:\import\onpremrtrvm.zip"
+    $webClient.DownloadFile($url, $output)
+
+    Write-Output "Unzip the folder to c:\virtual machines and import as new vm in hyper-v"
 }
 
 function Deploy-DomainControllerVM {
