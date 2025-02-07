@@ -32,6 +32,13 @@ New-NetIPAddress -IPAddress 172.33.0.1 -PrefixLength 24 -InterfaceIndex $adapter
 Write-Output "Enable Enhanced Session Mode"
 Set-VMHost -EnableEnhancedSessionMode $true
 
+# create static mapping for s2s vpn tunnel
+
+$IPsecPorts = @(500, 4500) # UDP ports for IPsec
+foreach ($port in $IPsecPorts) {
+    Add-NetNatStaticMapping -NatName InternalNat -Protocol UDP -ExternalIPAddress "0.0.0.0/0" -ExternalPort $port -InternalIPAddress 172.33.0.9 -InternalPort $port
+}
+
 # create scenario script 
 
 @'
