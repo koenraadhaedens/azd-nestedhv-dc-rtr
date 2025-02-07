@@ -9,6 +9,14 @@ New-Item -Path $opsDir -ItemType directory -Force
 $iso = "C:\iso"
 New-Item -Path $iso -ItemType directory -Force
 
+# Create path iso
+$import = "C:\import"
+New-Item -Path $import -ItemType directory -Force
+
+# Create path iso
+$vms = "C:\virtual machines"
+New-Item -Path $vms -ItemType directory -Force
+
 
 # download windows server 2022 eval version iso
 # $downloadUrl = "https://go.microsoft.com/fwlink/p/?LinkID=2195280&clcid=0x409&culture=en-us&country=US"
