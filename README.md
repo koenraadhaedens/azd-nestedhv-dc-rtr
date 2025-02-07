@@ -46,7 +46,13 @@ You can also use Azure Cloud Shell where AZD is preinstalled
 Once the setup is complete:
 - Create NSG rue to allow only your client ip or use Just-in-time policy
 - Login to the VM.
-- Choose a scenario or install VMs within the nested hypervisor as needed.
+
+
+## Choose a scenario or install VMs within the nested hypervisor as needed.
+
+[Creating a Site-to-Site VPN Tunnel demo](https://github.com/koenraadhaedens/azd-nestedhv-dc-rtr/blob/main/demoguide-s2svpn/README.md)
+
+
 
 ## Cleaning Up
    ```sh

@@ -58,8 +58,8 @@ function Deploy-RouterVM {
     $output = "C:\import\onpremrtrvm.zip"
     $webClient.DownloadFile($url, $output)
     C:\OpsDir\7za.exe x C:\import\onpremrtrvm.zip -o"C:\virtual machines"
-    Import-VM -Path "C:\virtual machines\onprem-rtr\onprem-rtr.vmcx"
- 
+    Import-VM -Path "C:\virtual machines\ONPREM-RTR\Virtual Machines\50519A43-2923-4C3C-AC77-5BD2206D6F34.vmcx"
+    Set-VMProcessor -VMName "ONPREM-RTR" -Count 2
 
 }
 
