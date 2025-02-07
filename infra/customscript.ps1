@@ -36,6 +36,21 @@ $trigger = New-ScheduledTaskTrigger -AtStartup
 $principal = New-ScheduledTaskPrincipal -UserID "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
 Register-ScheduledTask -TaskName "SetUpVMs" -Action $action -Trigger $trigger -Principal $principal
 
+# add hyper-v shortcut to desktop
+$shortcutPath = "C:\Users\Public\Desktop\Hyper-V Manager.lnk"
+$targetPath = "C:\Windows\System32\mmc.exe"
+$arguments = "virtmgmt.msc"
+
+# Create a new WScript.Shell COM object
+$wshShell = New-Object -ComObject WScript.Shell
+
+# Create the shortcut
+$shortcut = $wshShell.CreateShortcut($shortcutPath)
+$shortcut.TargetPath = $targetPath
+$shortcut.Arguments = $arguments
+$shortcut.IconLocation = "$targetPath,0"
+$shortcut.Save()
+
 # install 7zip
 Write-Output "Download with Bits"
 $sourceFolder = 'https://sagithubdemokhd.blob.core.windows.net/public'
