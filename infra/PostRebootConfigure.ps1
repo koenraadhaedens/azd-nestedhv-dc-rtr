@@ -73,23 +73,22 @@ switch ($choice) {
 }
 '@ | Out-File -FilePath "C:\OpsDir\scenarioscript.ps1"
 
-# Create schortcut on desktop for scenaio choise
+# Create shortcut on desktop for scenario choice
 # Parameters
 $scriptPath = "C:\OpsDir\scenarioscript.ps1"
-$shortcutPath = [System.IO.Path]::Combine([Environment]::GetFolderPath("Desktop"), "choose_scenario.lnk")
+$publicDesktopPath = [System.IO.Path]::Combine([Environment]::GetFolderPath("CommonDesktopDirectory"), "choose_scenario.lnk")
 
 # Create WScript.Shell COM Object
 $wshShell = New-Object -ComObject WScript.Shell
 
 # Create Shortcut
-$shortcut = $wshShell.CreateShortcut($shortcutPath)
+$shortcut = $wshShell.CreateShortcut($publicDesktopPath)
 $shortcut.TargetPath = "powershell.exe"
-$shortcut.Arguments = "-File `"$scriptPath`""
+$shortcut.Arguments = "-File `"$scriptPath`"" 
 $shortcut.WorkingDirectory = "C:\OpsDir"
 $shortcut.Save()
 
-Write-Output "Shortcut created at: $shortcutPath"
-
+Write-Output "Shortcut created at: $publicDesktopPath"
 
 
 
