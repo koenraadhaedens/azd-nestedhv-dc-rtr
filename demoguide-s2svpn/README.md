@@ -40,5 +40,8 @@ After creating the VPN tunnel, go to the ONPREM-RTR VM and follow these steps:
 6. Click "OK".
 7. Right-click the "AZUREVPN" network interface and click "Connect".
 
+![test config settings s2s tunnel onprem demo screenshot](https://github.com/koenraadhaedens/azd-nestedhv-dc-rtr/blob/main/demoguide-s2svpn/media/Screenshottests2svpnrouting.png)
+
+
 ### Conclusion
 You've successfully established a site-to-site VPN tunnel using a nested hypervisor setup. This secure connection allows for seamless communication between your on-premises network and Azure, enabling you to leverage cloud resources while maintaining control over your local infrastructure.
