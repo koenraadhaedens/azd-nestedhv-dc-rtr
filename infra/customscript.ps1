@@ -28,6 +28,23 @@ $trigger = New-ScheduledTaskTrigger -AtStartup
 $principal = New-ScheduledTaskPrincipal -UserID "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
 Register-ScheduledTask -TaskName "SetUpVMs" -Action $action -Trigger $trigger -Principal $principal
 
+# install 7zip
+Write-Output "Download with Bits"
+$sourceFolder = 'https://sagithubdemokhd.blob.core.windows.net/public'
+$downloads = @( `
+     "$sourceFolder/7za.exe" `
+    ,"$sourceFolder/7za.dll" `
+    ,"$sourceFolder/7zxa.dll" `
+    )
+
+$destinationFiles = @( `
+     "c:\OpsDir\7za.exe" `
+    ,"c:\OpsDir\7za.dll" `
+    ,"c:\OpsDir\7zxa.dll" `
+    )
+
+Import-Module BitsTransfer
+Start-BitsTransfer -Source $downloads -Destination $destinationFiles
 
 # Install Hyper-V feature
 Write-Output "Install Hyper-V and restart"
