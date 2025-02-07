@@ -6,6 +6,13 @@ $ErrorActionPreference = 'SilentlyContinue'
 
 $cmdLogPath = "C:\PostRebootConfigure_log_cmd.txt"
 
+
+Import-Module BitsTransfer
+
+# Unregister scheduled task so this script doesn't run again on next reboot
+Write-Output "Remove PostRebootConfigure scheduled task"
+Unregister-ScheduledTask -TaskName "SetUpVMs" -Confirm:$false
+
 # Create the NAT network
 Write-Output "Create internal NAT"
 $natName = "InternalNat"
@@ -50,8 +57,10 @@ function Deploy-RouterVM {
     $url = "https://sagithubdemokhd.blob.core.windows.net/public/ONPREM-RTR.zip"
     $output = "C:\import\onpremrtrvm.zip"
     $webClient.DownloadFile($url, $output)
+    C:\OpsDir\7za.exe x C:\import\onpremrtrvm.zip -o"C:\virtual machines"
+    Import-VM -Path "C:\virtual machines\onprem-rtr\onprem-rtr.vmcx"
+ 
 
-    Write-Output "Unzip the folder to c:\virtual machines and import as new vm in hyper-v"
 }
 
 function Deploy-DomainControllerVM {

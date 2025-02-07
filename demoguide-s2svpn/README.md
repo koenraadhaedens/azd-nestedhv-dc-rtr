@@ -10,7 +10,9 @@ Begin by deploying the "Hub Spoke with VPN Gateway and JumpVM" from the [Microso
 
 ### Step 2: Deploy ONPREM-RTR VM
 Double-click the **choose_scenario** shortcut on the desktop and select **2) Download and Deploy Router VM**.  
-This will download the **onprem-rtr** virtual machine and deploy it to the hypervisor. The **onprem-rtr** will be assigned the IP address **172.33.0.9** and will have static routes configured towards the hub and spoke networks you deployed in Step 1.
+This will download the **onprem-rtr** virtual machine and deploy it to the hypervisor. The **onprem-rtr** will be assigned the IP address **172.33.0.9** and will have static routes configured towards the hub and spoke networks you deployed in the first Step.
+
+
 
 ### Step 3: On Azure Install a Local Network Gateway
 Upon deploying the ONPREM-RTR VM, the next step is to install a "local network gateway" that points to the public IP address of the nested hypervisor. Use the following details:
