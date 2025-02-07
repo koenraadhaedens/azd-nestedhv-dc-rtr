@@ -6,7 +6,7 @@
 This demoguide walks you through the process of creating a site-to-site (S2S) VPN tunnel using a nested hypervisor setup. The tutorial includes deploying the necessary virtual machines, configuring network gateways, and establishing the VPN tunnel for secure communication between your on-premises network and Azure.
 
 ### Step 1: Deploy "Hub Spoke with VPN Gateway and JumpVM"
-Begin by deploying the "Hub Spoke with VPN Gateway and JumpVM" from the Microsoft Trainer demo deploy website. This deployment will set up the foundational infrastructure required for the VPN tunnel.
+Begin by deploying the "Hub Spoke with VPN Gateway and JumpVM" from the [Microsoft Trainer demo deploy] https://microsoftlearning.github.io/trainer-demo-deploy/ website. This deployment will set up the foundational infrastructure required for the VPN tunnel.
 
 ### Step 2: Deploy ONPREM-RTR VM
 Once the initial deployment is complete, you need to select option 1 in your scenario script to "deploy onprem-rtr vm". This virtual machine will act as your on-premises router.
