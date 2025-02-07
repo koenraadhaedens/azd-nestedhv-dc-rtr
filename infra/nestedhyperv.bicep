@@ -150,7 +150,7 @@ resource winNsg 'Microsoft.Network/networkSecurityGroups@2019-11-01' = {
           destinationPortRange: '3389'
           sourceAddressPrefix: '*'
           destinationAddressPrefix: '*'
-          access: 'Allow'
+          access: 'Deny'
           priority: 1000
           direction: 'Inbound'
         }
