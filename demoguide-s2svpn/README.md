@@ -9,12 +9,15 @@ This demoguide walks you through the process of creating a site-to-site (S2S) VP
 Begin by deploying the "Hub Spoke with VPN Gateway and JumpVM" from the [Microsoft Trainer demo deploy](https://microsoftlearning.github.io/trainer-demo-deploy/) website. This deployment will set up the foundational infrastructure required for the VPN tunnel.
 
 ### Step 2: Deploy ONPREM-RTR VM
-Once the initial deployment is complete, you need to select option 1 in your scenario script to "deploy onprem-rtr vm". This virtual machine will act as your on-premises router.
+Double-click the **choose_scenario** shortcut on the desktop and select **2) Download and Deploy Router VM**.  
+This will download the **onprem-rtr** virtual machine and deploy it to the hypervisor. The **onprem-rtr** will be assigned the IP address **172.33.0.9** and will have static routes configured towards the hub and spoke networks you deployed in Step 1.
 
-### Step 3: Install a Local Network Gateway
+### Step 3: On Azure Install a Local Network Gateway
 Upon deploying the ONPREM-RTR VM, the next step is to install a "local network gateway" that points to the public IP address of the nested hypervisor. Use the following details:
 - **Public IP Address:** [Public IP of the nested hypervisor]
 - **Address Spaces:** 172.33.0.0/24
+
+![Local Network Deploy demo screenshot](.\demoguide-s2svpn\media\Screenshot-create-lng.png)
 
 ### Step 4: Create the S2S VPN Tunnel
 With the local network gateway in place, you can now create the S2S VPN tunnel on the installed Virtual Network Gateway. Follow these steps:
