@@ -13,6 +13,9 @@ You can also use Azure Cloud Shell where AZD is preinstalled
  az vm list-skus --query "[?name=='Standard_D8s_v3'].[name, locations]" --output table
  ```
 
+ **TIP:** All downloadable files are located in **North Europe**, so deploying additional resources in the nested VM within this region may improve performance.
+
+
 ## Installation Steps
 
 1. **Clone the Repository**
