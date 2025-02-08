@@ -34,13 +34,14 @@ With the local network gateway in place, you can now create the S2S VPN tunnel o
 
 ### Step 5: Configure the ONPREM-RTR VM
 After creating the VPN tunnel, go to the ONPREM-RTR VM and follow these steps:
-1. Open Server Manager.
-2. Go to "Routing and Remote Access".
-3. In the network interface, right-click the "AZUREVPN" network and choose "Properties".
-4. In the "General" tab, change the IP address from 11.11.11.11 to the public IP address of the Virtual Network Gateway.
-5. In the "Security" tab, change the shared key to the one you used previously.
-6. Click "OK".
-7. Right-click the "AZUREVPN" network interface and click "Connect".
+1. Logon to the local ONPREM-RTR vm username: administrator Password: demo!pass123
+2. Open Server Manager.
+3. Go to "Routing and Remote Access".
+4. In the network interface, right-click the "AZUREVPN" network and choose "Properties".
+5. In the "General" tab, change the IP address from 11.11.11.11 to the public IP address of the Virtual Network Gateway.
+6. In the "Security" tab, change the shared key to the one you used previously.
+7. Click "OK".
+8. Right-click the "AZUREVPN" network interface and click "Connect".
 
 ![test config settings s2s tunnel onprem demo screenshot](https://github.com/koenraadhaedens/azd-nestedhv-dc-rtr/blob/main/demoguide-s2svpn/media/Screenshottests2svpnrouting.png)
 
