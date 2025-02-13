@@ -71,15 +71,37 @@ function Deploy-RouterVM {
 }
 
 function Deploy-DomainControllerVM {
-    Write-Output "Downloading and deploying Domain Controller VM..."
+    Write-Output "Downloading and deploying Router VM..."
     # Add your script logic here
     Write-Output "under construction"
+       Write-Output "Downloading and deploying Router VM..."
+    # Add your script logic here
+    Write-Output "dowloading vm to c:\import folder. Please wait until the prompt returns"
+  
+    $webClient = New-Object System.Net.WebClient
+    $url = "https://sagithubdemokhd.blob.core.windows.net/public/ONPREM-DC1.zip"
+    $output = "C:\import\onpremdc1vm.zip"
+    $webClient.DownloadFile($url, $output)
+    C:\OpsDir\7za.exe x C:\import\onpremdc1vm.zip -o"C:\virtual machines"
+    Import-VM -Path "C:\virtual machines\ONPREM-DC1\Virtual Machines\292EF233-31E8-4A38-B91D-3566FCD060A8.vmcx"
+    Set-VMProcessor -VMName "ONPREM-DC1" -Count 2
 }
 
 function Deploy-SQLServerVM {
-    Write-Output "Downloading and deploying SQL Server VM..."
+    Write-Output "Downloading and deploying Router VM..."
     # Add your script logic here
     Write-Output "under construction"
+       Write-Output "Downloading and deploying Router VM..."
+    # Add your script logic here
+    Write-Output "dowloading vm to c:\import folder. Please wait until the prompt returns"
+  
+    $webClient = New-Object System.Net.WebClient
+    $url = "https://sagithubdemokhd.blob.core.windows.net/public/ONPREM-SQL.zip"
+    $output = "C:\import\onpremsqlvm.zip"
+    $webClient.DownloadFile($url, $output)
+    C:\OpsDir\7za.exe x C:\import\onpremsqlvm.zip -o"C:\virtual machines"
+    Import-VM -Path "C:\virtual machines\ONPREM-SQL\Virtual Machines\8ACDFE30-D95D-43EC-B8CD-09B650BAFEEA.vmcx"
+    Set-VMProcessor -VMName "ONPREM-SQL" -Count 2
 }
 
 # Display menu
