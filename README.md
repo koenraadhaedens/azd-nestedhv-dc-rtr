@@ -1,3 +1,45 @@
+# Azure Nested Hypervisor Demos  
+
+This repository showcases a collection of demos leveraging Azure's nested hypervisor capabilities, integrating powerful tools like Azure Arc, Defender for Identity, and more. These demos are designed to demonstrate hybrid cloud management, advanced security, and multi-cloud governance scenarios.  
+
+## Demo List  
+
+1. **Hybrid Infrastructure Management with Azure Arc**  
+   Manage on-premises and multi-cloud servers seamlessly using Azure Arc's unified management platform.  
+
+2. **Securing Identities with Defender for Identity**  
+   Real-time threat detection and identity protection in hybrid Active Directory environments.  
+
+3. **Multi-Tenant Kubernetes Management with Azure Arc**  
+   Manage and secure Kubernetes clusters across diverse environments with Azure Arc-enabled Kubernetes.  
+
+4. **Advanced Threat Hunting with Microsoft Sentinel**  
+   Cross-cloud threat detection and investigation with Azure Sentinel integrated with Defender for Identity.  
+
+5. **Nested Virtualization with Azure VMs**  
+   Run Hyper-V inside an Azure VM for workload isolation and advanced testing scenarios.  
+
+6. **Azure Arc-Enabled Data Services**  
+   Deploy and manage SQL Managed Instances on-premises or other clouds using Azure Arc.  
+
+7. **Hybrid Cloud Security with Microsoft Defender for Cloud**  
+   Unified security management across Azure, on-premises, and multi-cloud environments.  
+
+8. **Disaster Recovery with Azure Site Recovery in Nested Hypervisors**  
+   Simulate on-premises VM failover and failback using Azure Site Recovery with nested virtualization.  
+
+9. **Policy-Driven Governance using Azure Arc**  
+   Enforce compliance and security policies across hybrid and multi-cloud resources.  
+
+10. **Zero Trust Architecture with Defender for Identity and Conditional Access**  
+   Implement and demonstrate Zero Trust security models in a hybrid identity environment.  
+
+## Getting Started  
+
+Each demo includes detailed setup instructions (under construction, all help is welcome), architecture diagrams, and step-by-step guides.  
+
+
+
 # Installing the Infrastructure
 
 ## Prerequisites
