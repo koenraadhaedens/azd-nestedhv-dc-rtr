@@ -1,0 +1,1 @@
+This SQL server can be use for difrent demo scenario such as migration, Azure Arc, Performance Tuning ... (AZ-104, DP-300 ...)
