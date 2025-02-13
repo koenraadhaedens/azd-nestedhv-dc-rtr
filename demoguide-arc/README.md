@@ -29,42 +29,13 @@ az provider register --namespace Microsoft.GuestConfiguration
 
 ---
 
-## Step 2: Create Azure Service Principal  
-This service principal will authenticate the on-premises VMs to Azure Arc.  
-```sh
-az ad sp create-for-rbac --name "ArcSP" --role "Contributor" --scopes /subscriptions/<your-subscription-id> --query "{clientId:appId,clientSecret:password,tenantId:tenant}" --output table
-```
-Note down the output values:  
-- **clientId**  
-- **clientSecret**  
-- **tenantId**  
+## Step 2: Onboard vm's with Azure Arc
+This service principal will authenticate the on-premises VMs to Azure Arc. 
+1. Go to the Azure Portal: https://portal.azure.com  
+1. Go to the Azure Portal: https://portal.azure.com  
+2. Navigate to **Azure Arc** > **Servers**  
 
----
 
-## Step 3: Install Azure Arc Agent on VMs  
-On each on-premises VM (onprem-dc1 and onprem-sql1), run the following:  
-
-1. Download and install the Azure Arc agent:  
-```powershell
-$agentUrl = "https://aka.ms/AzureConnectedMachineAgent"
-Invoke-WebRequest -Uri $agentUrl -OutFile AzureConnectedMachineAgent.msi
-Start-Process msiexec.exe -ArgumentList "/i AzureConnectedMachineAgent.msi /quiet" -Wait
-```
-
-2. Connect the VM to Azure Arc:  
-```powershell
-$tenantId = "<tenantId>"
-$clientId = "<clientId>"
-$clientSecret = "<clientSecret>"
-$resourceGroup = "<resource-group>"
-$region = "<azure-region>"
-
-$connectScript = "https://aka.ms/AzureArcVMOnboardingScript"
-Invoke-WebRequest -Uri $connectScript -OutFile ConnectArc.ps1
-PowerShell.exe -ExecutionPolicy Unrestricted -File .\ConnectArc.ps1 -tenantId $tenantId -appId $clientId -appSecret $clientSecret -resourceGroup $resourceGroup -region $region
-```
-
----
 
 ## Step 4: Verify Azure Arc Integration  
 1. Go to the Azure Portal: https://portal.azure.com  
