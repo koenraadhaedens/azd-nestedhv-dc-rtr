@@ -7,7 +7,7 @@ This repository showcases a collection of demos leveraging Azure's nested hyperv
 1. [**Hybrid Infrastructure Management with Azure Arc**](https://github.com/koenraadhaedens/azd-nestedhv-dc-rtr/tree/main/demoguide-arc)
    Manage on-premises and multi-cloud servers seamlessly using Azure Arc's unified management platform.  
 
-2. **Securing Identities with Defender for Identity**  
+2. [**Securing Identities with Defender for Identity**](https://github.com/koenraadhaedens/azd-nestedhv-dc-rtr/tree/main/demoguide-dc1)  
    Real-time threat detection and identity protection in hybrid Active Directory environments.  
 
 3. **Multi-Tenant Kubernetes Management with Azure Arc**  
