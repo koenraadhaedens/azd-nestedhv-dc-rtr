@@ -28,7 +28,7 @@ This repository showcases a collection of demos leveraging Azure's nested hyperv
 8. **Disaster Recovery with Azure Site Recovery in Nested Hypervisors**  
    Simulate on-premises VM failover and failback using Azure Site Recovery with nested virtualization.  
 
-9. **Policy-Driven Governance using Azure Arc**  
+   [**Policy-Driven Governance using Azure Arc**](https://github.com/koenraadhaedens/azd-nestedhv-dc-rtr/tree/main/demoguide-arc)
    Enforce compliance and security policies across hybrid and multi-cloud resources.  
 
 10. **Zero Trust Architecture with Defender for Identity and Conditional Access**  
