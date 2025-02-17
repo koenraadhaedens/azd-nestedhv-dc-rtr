@@ -19,7 +19,7 @@ This repository showcases a collection of demos leveraging Azure's nested hyperv
 5. **Nested Virtualization with Azure VMs**  
    Run Hyper-V inside an Azure VM for workload isolation and advanced testing scenarios.  
 
-6. **Azure Arc-Enabled Data Services**  
+6. [**Azure Arc-Enabled Data Services**$(https://github.com/koenraadhaedens/azd-nestedhv-dc-rtr/tree/main/demoguide-arc)  
    Deploy and manage SQL Managed Instances on-premises or other clouds using Azure Arc.  
 
 7. **Hybrid Cloud Security with Microsoft Defender for Cloud**  
