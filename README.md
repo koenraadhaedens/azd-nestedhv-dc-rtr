@@ -69,10 +69,19 @@ You can also use Azure Cloud Shell where AZD is preinstalled
    cd azd-nestedhv-dc-rtr
    ```
 3. **Provision the Infrastructure**
+   If not in CLoud shell Login to azure
+      ```sh
+   azd azd auth login
+   ```
+   Or if you wont to use Device code while on a defcontainer
+   ```sh
+   azd azd auth login --use-device-code
+   ```   
+4. **Provision the Infrastructure**
    ```sh
    azd provision
    ```
-4. **Select the Required Options**
+5. **Select the Required Options**
    - Enter a new environment name (Will be the name of the Resource Group to rg-xxxxxxx where xxxxxxx is your new environment name)
    - Choose the Azure subscription.
    - Select the region.
