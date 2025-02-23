@@ -69,11 +69,11 @@ You can also use Azure Cloud Shell where AZD is preinstalled
    cd azd-nestedhv-dc-rtr
    ```
 3. **Provision the Infrastructure**
-   If not in CLoud shell Login to azure
-      ```sh
+If you are not using Azure Cloud Shell, log in to Azure with the following command:
+   ```sh
    azd azd auth login
    ```
-   Or if you wont to use Device code while on a defcontainer
+   If you are working inside a development container and prefer to use a device code for authentication, run:
    ```sh
    azd azd auth login --use-device-code
    ```   
