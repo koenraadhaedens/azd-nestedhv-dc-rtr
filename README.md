@@ -69,7 +69,7 @@ You can also use Azure Cloud Shell where AZD is preinstalled
    cd azd-nestedhv-dc-rtr
    ```
 3. **Provision the Infrastructure**
-If you are not using Azure Cloud Shell, log in to Azure with the following command:
+   If you are not using Azure Cloud Shell, log in to Azure with the following command:
    ```sh
    azd azd auth login
    ```
