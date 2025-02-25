@@ -90,7 +90,7 @@ You can also use Azure Cloud Shell where AZD is preinstalled
 
 ## VM Access Details
 
-- **Username:** `vmadmin`
+- **Username:** `adminuser`
 - **Password:** (Provided during provisioning)
 
 ## Post Installation
