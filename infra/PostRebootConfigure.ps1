@@ -39,6 +39,21 @@ foreach ($port in $IPsecPorts) {
     Add-NetNatStaticMapping -NatName InternalNat -Protocol UDP -ExternalIPAddress "0.0.0.0/0" -ExternalPort $port -InternalIPAddress 172.33.0.9 -InternalPort $port
 }
 
+#region install AutomatedLab for datacenter scenario
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+Install-Module -Name Pester -SkipPublisherCheck -Force
+Install-Module AutomatedLab -SkipPublisherCheck -AllowClobber
+[Environment]::SetEnvironmentVariable('AUTOMATEDLAB_TELEMETRY_OPTIN', 'true', 'Machine')
+$env:AUTOMATEDLAB_TELEMETRY_OPTIN = 'true'
+Enable-LabHostRemoting -Force
+New-LabSourcesFolder -DriveLetter C
+Update-LabSysinternalsTools
+Set-PSFConfig -Module AutomatedLab -Name DoNotWaitForLinux -Value $true
+
+#endregion
+
 # create scenario script 
 
 @'
