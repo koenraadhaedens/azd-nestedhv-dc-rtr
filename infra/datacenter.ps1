@@ -30,7 +30,7 @@ If (!(Get-VMSwitch -Name 'External' -ErrorAction SilentlyContinue))
 
 New-LabDefinition -Name $labname -DefaultVirtualizationEngine HyperV -VmPath $vmpath
 
-Add-LabVirtualNetworkDefinition -Name $labname -AddressSpace '172.33.0.0/24'
+Add-LabVirtualNetworkDefinition -Name $labname -AddressSpace '192.168.50.0/24'
 Add-LabVirtualNetworkDefinition -Name 'InternalNatSwitch'
 
 $netAdapter = @()
@@ -79,7 +79,7 @@ Add-LabMachineDefinition -Name 'S2D1-02' -Roles HyperV -IsDomainJoined -Network 
 Add-LabMachineDefinition -Name 'CL1-01' -Network $labname -IsDomainJoined -MinMemory 512MB -MaxMemory 4GB -Gateway 192.168.50.3
 Add-LabMachineDefinition -Name 'CL1-02' -Network $labname -IsDomainJoined -MinMemory 512MB -MaxMemory 4GB -Gateway 192.168.50.3
 
-Install-Lab -DelayBetweenComputers 60
+Install-Lab -DelayBetweenComputers 60 -Verbose
 
 # Features
 $dcjob = Install-LabWindowsFeature -FeatureName RSAT -ComputerName 'DC1' -IncludeAllSubFeature -IncludeManagementTools
