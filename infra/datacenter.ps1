@@ -9,12 +9,12 @@ if (!(Test-Path -Path C:\LabSources\ISOs\WindowsServer2025Eval.iso ))
 }
 if (!(Test-Path -Path C:\LabSources\tools\PolicyDefinitions.zip ))
 {
-    Start-BitsTransfer -Destination C:\LabSources\tools\PolicyDefinitions.zip -Source 'https://github.com/jkulbe-msft/azd-nestedhv-dc-rtr/blob/5dea62a43cff2cd345b39cdabe6c4abfa594b068/infra/PolicyDefinitions.zip'
+    Start-BitsTransfer -Destination C:\LabSources\tools\PolicyDefinitions.zip -Source 'https://raw.githubusercontent.com/jkulbe-msft/azd-nestedhv-dc-rtr/refs/heads/main/infra/PolicyDefinitions.zip'
     Expand-Archive -Path C:\LabSources\tools\PolicyDefinitions.zip -Destination C:\LabSources\tools
 }
 if (!(Test-Path -Path C:\LabSources\tools\SecurityBaselineGPO.zip ))
 {
-    Start-BitsTransfer -Destination C:\LabSources\tools\SecurityBaselineGPO.zip -Source 'https://github.com/jkulbe-msft/azd-nestedhv-dc-rtr/blob/5dea62a43cff2cd345b39cdabe6c4abfa594b068/infra/SecurityBaselineGPO.zip'
+    Start-BitsTransfer -Destination C:\LabSources\tools\SecurityBaselineGPO.zip -Source 'https://raw.githubusercontent.com/jkulbe-msft/azd-nestedhv-dc-rtr/refs/heads/main/infra/SecurityBaselineGPO.zip'
     Expand-Archive -Path C:\LabSources\tools\SecurityBaselineGPO.zip -Destination C:\LabSources\tools
 }
 
