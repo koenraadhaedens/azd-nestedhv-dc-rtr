@@ -242,5 +242,5 @@ Invoke-LabCommand -ActivityName "configure S2D cluster" -ComputerName 'S2D1-01' 
 
 Show-LabDeploymentSummary
 
-
 Stop-Transcript
+Read-Host -Prompt "Press any key to continue"
