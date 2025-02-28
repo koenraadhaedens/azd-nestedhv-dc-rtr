@@ -97,10 +97,11 @@ Add-LabMachineDefinition -Name 'CL1-02' -Network $labname -IsDomainJoined -MinMe
 Install-Lab -DelayBetweenComputers 60
 
 # Features
-$dcjob = Install-LabWindowsFeature -FeatureName RSAT -ComputerName 'DC1' -IncludeAllSubFeature -IncludeManagementTools
-$admjob = Install-LabWindowsFeature -FeatureName RSAT,DHCP,File-Services,SMS,Storage-Replica,System-Insights,Migration,IPAM -ComputerName 'ADM1' -IncludeAllSubFeature -AsJob -PassThru
-$cljob = Install-LabWindowsFeature -FeatureName File-Services,Failover-Clustering -IncludeManagementTools -ComputerName 'S2D1-01','S2D1-02','CL1-01','CL1-02' -IncludeAllSubFeature -AsJob -PassThru
-$srvjob = Install-LabWindowsFeature -FeatureName DHCP,FS-Data-Deduplication,FS-iSCSITarget-Server,Storage-Replica -IncludeManagementTools -ComputerName 'SRV1' -IncludeAllSubFeature -AsJob -PassThru
+Install-LabWindowsFeature -FeatureName RSAT -ComputerName 'DC1' -IncludeAllSubFeature -IncludeManagementTools
+Install-LabWindowsFeature -FeatureName RSAT,DHCP,File-Services,SMS,Storage-Replica,System-Insights,Migration,IPAM -ComputerName 'ADM1' -IncludeAllSubFeature -IncludeManagementTools
+Install-LabWindowsFeature -FeatureName File-Services,Failover-Clustering -IncludeManagementTools -ComputerName 'S2D1-01','S2D1-02','CL1-01','CL1-02' -IncludeAllSubFeature
+Install-LabWindowsFeature -FeatureName DHCP,FS-Data-Deduplication,FS-iSCSITarget-Server,Storage-Replica -IncludeManagementTools -ComputerName 'SRV1' -IncludeAllSubFeature
+
 
 <# Install and update WAC extensions
 $wacjob = Invoke-LabCommand -ActivityName "WAC Update" -ComputerName ADM1 -AsJob -PassThru -ScriptBlock { 
@@ -108,15 +109,16 @@ $wacjob = Invoke-LabCommand -ActivityName "WAC Update" -ComputerName ADM1 -AsJob
     Get-Extension "https://adm1" | ? status -eq Available | foreach {Install-Extension "https://adm1" $_.id}
     Get-Extension "https://adm1" | ? islatestVersion -ne $true | foreach {Update-Extension "https://adm1" $_.id}
  }
-#>
+
 
 Wait-LWLabJob -Job $dcjob -ProgressIndicator 10 -NoDisplay -PassThru
 Wait-LWLabJob -Job $admjob -ProgressIndicator 10 -NoDisplay -PassThru
 Wait-LWLabJob -Job $cljob -ProgressIndicator 10 -NoDisplay -PassThru
 Wait-LWLabJob -Job $srvjob -ProgressIndicator 10 -NoDisplay -PassThru
-# Wait-LWLabJob -Job $wacjob -ProgressIndicator 10 -NoDisplay -PassThru
+Wait-LWLabJob -Job $wacjob -ProgressIndicator 10 -NoDisplay -PassThru
+#>
 
-Get-LabVM | ? Name -ne 'dc1' | Restart-LabVM -Wait
+Restart-LabVM -ComputerName 'ADM1','SRV1','S2D1-01','S2D1-02','CL1-01','CL1-02' -Wait
 
 # AD setup
 Invoke-LabCommand -ActivityName "OUs part 1" -ComputerName DC1 -ScriptBlock { New-ADOrganizationalUnit -Name "Resources" -Path "DC=contoso,DC=com" }
