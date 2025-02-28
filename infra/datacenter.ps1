@@ -6,8 +6,21 @@ Enable-LabHostRemoting -Force
 if (!(Test-Path -Path C:\LabSources\ISOs\WindowsServer2025Eval.iso ))
 {
     Start-BitsTransfer -Destination C:\LabSources\ISOs\WindowsServer2025Eval.iso -Source 'https://go.microsoft.com/fwlink/?linkid=2293312&clcid=0x409&culture=en-us&country=us'
-    Unblock-LabSources
 }
+if (!(Test-Path -Path C:\LabSources\tools\PolicyDefinitions.zip ))
+{
+    Start-BitsTransfer -Destination C:\LabSources\tools\PolicyDefinitions.zip -Source 'https://github.com/jkulbe-msft/azd-nestedhv-dc-rtr/blob/5dea62a43cff2cd345b39cdabe6c4abfa594b068/infra/PolicyDefinitions.zip'
+    Expand-Archive -Path C:\LabSources\tools\PolicyDefinitions.zip -Destination C:\LabSources\tools
+}
+if (!(Test-Path -Path C:\LabSources\tools\SecurityBaselineGPO.zip ))
+{
+    Start-BitsTransfer -Destination C:\LabSources\tools\SecurityBaselineGPO.zip -Source 'https://github.com/jkulbe-msft/azd-nestedhv-dc-rtr/blob/5dea62a43cff2cd345b39cdabe6c4abfa594b068/infra/SecurityBaselineGPO.zip'
+    Expand-Archive -Path C:\LabSources\tools\SecurityBaselineGPO.zip -Destination C:\LabSources\tools
+}
+
+Unblock-LabSources
+
+
 
 $labName = 'AZ80x'
 $vmpath = "C:\$labname"
@@ -110,8 +123,8 @@ Invoke-LabCommand -ActivityName "OUs part 1" -ComputerName DC1 -ScriptBlock { Ne
 Invoke-LabCommand -ActivityName "OUs part 2" -ComputerName DC1 -ScriptBlock { "Users","Computers","Groups" | Foreach-Object { New-ADOrganizationalUnit -Name $_ -Path "OU=Resources,DC=contoso,DC=com"} }
 Invoke-LabCommand -ActivityName "Users" -ComputerName DC1 -ScriptBlock { "User1","User2","DelegatedIpamUser","AdminInSilo" | Foreach-Object { New-ADUser -Name $_ -AccountPassword (ConvertTo-SecureString 'Somepass!' -AsPlainText -Force) -PasswordNeverExpires $true -Enabled $true -Path "OU=Users,OU=Resources,DC=contoso,DC=com"} }
 Invoke-LabCommand -ActivityName "second admin permissions" -ComputerName DC1 -ScriptBlock { Add-ADGroupMember -Identity "Domain Admins" -Members 'AdminInSilo'  }
-Copy-LabFileItem -Path $PSScriptRoot\PolicyDefinitions -ComputerName DC1 -DestinationFolderPath C:\Windows\Sysvol\domain\Policies
-Copy-LabFileItem -Path $PSScriptRoot\SecurityBaselineGPO -ComputerName DC1 -DestinationFolderPath C:\Lab
+Copy-LabFileItem -Path C:\LabSources\tools\PolicyDefinitions -ComputerName DC1 -DestinationFolderPath C:\Windows\Sysvol\domain\Policies
+Copy-LabFileItem -Path C:\LabSources\tools\SecurityBaselineGPO -ComputerName DC1 -DestinationFolderPath C:\Lab
 Invoke-LabCommand -ActivityName "GPO import" -ComputerName DC1 -ScriptBlock { C:\Lab\SecurityBaselineGPO\import-baselinegpo.ps1 }
 Invoke-LabCommand -ActivityName "resgister AD Schema extension" -ComputerName ADM1 -ScriptBlock { regsvr32 /s schmmgmt.dll }
 # Authentication Silo
