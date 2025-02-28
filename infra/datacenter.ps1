@@ -59,7 +59,8 @@ Add-LabMachineDefinition -Name 'DC1' -Roles RootDC,Routing -NetworkAdapter $netA
 # Admin server
 Add-LabDiskDefinition -Name 'ADM1-Data' -DiskSizeInGb 10 -Label 'Data' -DriveLetter S
 Add-LabDiskDefinition -Name 'ADM1-Logs' -DiskSizeInGb 10 -Label 'Logs' -DriveLetter L
-Add-LabMachineDefinition -Name 'ADM1' -Roles CARoot,WindowsAdminCenter,FileServer -IsDomainJoined -Network $labname -OperatingSystem $osNameWithDesktop -DiskName 'ADM1-Data','ADM1-Logs' -MinMemory 1GB -MaxMemory 8GB -Gateway 192.168.50.3
+#Add-LabMachineDefinition -Name 'ADM1' -Roles CARoot,WindowsAdminCenter,FileServer -IsDomainJoined -Network $labname -OperatingSystem $osNameWithDesktop -DiskName 'ADM1-Data','ADM1-Logs' -MinMemory 1GB -MaxMemory 8GB -Gateway 192.168.50.3
+Add-LabMachineDefinition -Name 'ADM1' -Roles CARoot,FileServer -IsDomainJoined -Network $labname -OperatingSystem $osNameWithDesktop -DiskName 'ADM1-Data','ADM1-Logs' -MinMemory 1GB -MaxMemory 8GB -Gateway 192.168.50.3
 
 # file server
 Add-LabDiskDefinition -Name 'SRV1-Data' -DiskSizeInGb 10 -Label 'Data' -DriveLetter S
@@ -88,18 +89,19 @@ $admjob = Install-LabWindowsFeature -FeatureName RSAT,DHCP,File-Services,SMS,Sto
 $cljob = Install-LabWindowsFeature -FeatureName File-Services,Failover-Clustering -IncludeManagementTools -ComputerName 'S2D1-01','S2D1-02','CL1-01','CL1-02' -IncludeAllSubFeature -AsJob -PassThru
 $srvjob = Install-LabWindowsFeature -FeatureName DHCP,FS-Data-Deduplication,FS-iSCSITarget-Server,Storage-Replica -IncludeManagementTools -ComputerName 'SRV1' -IncludeAllSubFeature -AsJob -PassThru
 
-# Install and update WAC extensions
+<# Install and update WAC extensions
 $wacjob = Invoke-LabCommand -ActivityName "WAC Update" -ComputerName ADM1 -AsJob -PassThru -ScriptBlock { 
     Import-Module "$env:ProgramFiles\windows admin center\PowerShell\Modules\ExtensionTools"
     Get-Extension "https://adm1" | ? status -eq Available | foreach {Install-Extension "https://adm1" $_.id}
     Get-Extension "https://adm1" | ? islatestVersion -ne $true | foreach {Update-Extension "https://adm1" $_.id}
  }
+#>
 
 Wait-LWLabJob -Job $dcjob -ProgressIndicator 10 -NoDisplay -PassThru
 Wait-LWLabJob -Job $admjob -ProgressIndicator 10 -NoDisplay -PassThru
 Wait-LWLabJob -Job $cljob -ProgressIndicator 10 -NoDisplay -PassThru
 Wait-LWLabJob -Job $srvjob -ProgressIndicator 10 -NoDisplay -PassThru
-Wait-LWLabJob -Job $wacjob -ProgressIndicator 10 -NoDisplay -PassThru
+# Wait-LWLabJob -Job $wacjob -ProgressIndicator 10 -NoDisplay -PassThru
 
 Get-LabVM | ? Name -ne 'dc1' | Restart-LabVM -Wait
 
@@ -223,23 +225,22 @@ Invoke-LabCommand -ActivityName "iScsi disk init" -ComputerName 'CL1-01' -Script
 }
 
 # create failover cluster
-Restart-LabVM -ComputerName cl1-01,cl1-02
+Restart-LabVM -ComputerName cl1-01,cl1-02 -Wait
 Invoke-LabCommand -ActivityName "configure failover cluster" -ComputerName 'CL1-01' -ScriptBlock {
     New-Cluster -Name CLUSTER1 -Node cl1-01 -StaticAddress 192.168.50.20
     Add-ClusterNode -Name cl1-02
 }
-Restart-LabVM -ComputerName cl1-01,cl1-02
 
 # Storage Spaces Direct Cluster
 Set-VMProcessor -VMName S2D1-01,S2D1-02 -ExposeVirtualizationExtensions $true
-Restart-LabVM -ComputerName S2D1-01,S2D1-02
+Restart-LabVM -ComputerName S2D1-01,S2D1-02 -Wait
 Invoke-LabCommand -ActivityName "configure S2D cluster" -ComputerName 'S2D1-01' -ScriptBlock {
     New-Cluster -Name S2D1 -Node S2D1-01,S2D1-02 -StaticAddress 192.168.50.30 -NoStorage
     Enable-ClusterStorageSpacesDirect -SkipEligibilityChecks -Confirm:$false
     New-Volume -StoragePoolFriendlyName 'S2D on S2D1' -FriendlyName "CSV" -FileSystem CSVFS_ReFS -UseMaximumSize
 }
 
-Show-LabDeploymentSummary -Detailed
+Show-LabDeploymentSummary
 
 
 Stop-Transcript
