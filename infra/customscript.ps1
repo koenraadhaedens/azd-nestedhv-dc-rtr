@@ -24,7 +24,7 @@ New-Item -Path $vms -ItemType directory -Force
 # Invoke-WebRequest -Uri $downloadUrl -OutFile $outputPath
 
 # Download PostReboot script
-$downloadUrl = "https://raw.githubusercontent.com/koenraadhaedens/azd-nestedhv-dc-rtr/refs/heads/main/infra/PostRebootConfigure.ps1"
+$downloadUrl = "https://raw.githubusercontent.com/jkulbe-msft/azd-nestedhv-dc-rtr/refs/heads/main/infra/PostRebootConfigure.ps1"
 $outputPath = Join-Path -Path $opsdir -ChildPath "PostRebootConfigure.ps1"
 
 Invoke-WebRequest -Uri $downloadUrl -OutFile $outputPath

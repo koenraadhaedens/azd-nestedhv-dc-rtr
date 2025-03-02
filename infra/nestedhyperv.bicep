@@ -7,7 +7,7 @@ param environmentName string
 param windowsOSVersion string = '2022-Datacenter'
 
 @description('Size for Windows hyper-vhost VM')
-param winVmSize string = 'Standard_D8s_v3'
+param winVmSize string = 'Standard_D8s_v5'
 
 @description('Username for Windows hyperv-host VM')
 param winVmUser string
@@ -298,7 +298,7 @@ resource customScriptExtension 'Microsoft.Compute/virtualMachines/extensions@202
     typeHandlerVersion: '1.10'
     settings: {
       fileUris: [
-        'https://raw.githubusercontent.com/koenraadhaedens/azd-nestedhv-dc-rtr/refs/heads/main/infra/customscript.ps1'
+        'https://raw.githubusercontent.com/jkulbe-msft/azd-nestedhv-dc-rtr/refs/heads/main/infra/customscript.ps1'
       ]
       commandToExecute: 'powershell -ExecutionPolicy Unrestricted -File customscript.ps1'
     }
