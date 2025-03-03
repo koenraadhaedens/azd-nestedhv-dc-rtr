@@ -17,6 +17,10 @@ New-Item -Path $import -ItemType directory -Force
 $vms = "C:\virtual machines"
 New-Item -Path $vms -ItemType directory -Force
 
+$disk = Get-Disk | Where-Object PartitionStyle -Eq 'RAW'
+Initialize-Disk -Number $disk.Number
+New-Partition -DiskNumber $disk.Number -UseMaximumSize -AssignDriveLetter
+Format-Volume -DriveLetter $disk.DriveLetter -FileSystem NTFS -NewFileSystemLabel "DataDisk"
 
 # download windows server 2022 eval version iso
 # $downloadUrl = "https://go.microsoft.com/fwlink/p/?LinkID=2195280&clcid=0x409&culture=en-us&country=US"
@@ -70,7 +74,7 @@ Import-Module BitsTransfer
 Start-BitsTransfer -Source $downloads -Destination $destinationFiles
 
 #prepare for datacenter demo region install AutomatedLab for datacenter scenario
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+# [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 Install-Module -Name Pester -SkipPublisherCheck -Force
@@ -78,7 +82,7 @@ Install-Module AutomatedLab -SkipPublisherCheck -AllowClobber
 [Environment]::SetEnvironmentVariable('AUTOMATEDLAB_TELEMETRY_OPTIN', 'true', 'Machine')
 $env:AUTOMATEDLAB_TELEMETRY_OPTIN = 'true'
 Enable-LabHostRemoting -Force
-New-LabSourcesFolder -DriveLetter E
+New-LabSourcesFolder -DriveLetter F
 Update-LabSysinternalsTools
 Set-PSFConfig -Module AutomatedLab -Name DoNotWaitForLinux -Value $true
 

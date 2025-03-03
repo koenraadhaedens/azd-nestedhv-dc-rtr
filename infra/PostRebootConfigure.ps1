@@ -110,19 +110,19 @@ function Deploy-Datacenter {
     Import-Module AutomatedLab
     Enable-LabHostRemoting -Force
 
-    if (!(Test-Path -Path E:\LabSources\ISOs\WindowsServer2025Eval.iso ))
+    if (!(Test-Path -Path F:\LabSources\ISOs\WindowsServer2025Eval.iso ))
     {
-        Start-BitsTransfer -Destination E:\LabSources\ISOs\WindowsServer2025Eval.iso -Source 'https://go.microsoft.com/fwlink/?linkid=2293312&clcid=0x409&culture=en-us&country=us'
+        Start-BitsTransfer -Destination F:\LabSources\ISOs\WindowsServer2025Eval.iso -Source 'https://go.microsoft.com/fwlink/?linkid=2293312&clcid=0x409&culture=en-us&country=us'
     }
-    if (!(Test-Path -Path E:\LabSources\tools\PolicyDefinitions.zip ))
+    if (!(Test-Path -Path F:\LabSources\tools\PolicyDefinitions.zip ))
     {
-        Start-BitsTransfer -Destination E:\LabSources\tools\PolicyDefinitions.zip -Source 'https://raw.githubusercontent.com/jkulbe-msft/azd-nestedhv-dc-rtr/refs/heads/main/infra/PolicyDefinitions.zip'
-        Expand-Archive -Path E:\LabSources\tools\PolicyDefinitions.zip -Destination E:\LabSources\tools
+        Start-BitsTransfer -Destination F:\LabSources\tools\PolicyDefinitions.zip -Source 'https://raw.githubusercontent.com/jkulbe-msft/azd-nestedhv-dc-rtr/refs/heads/main/infra/PolicyDefinitions.zip'
+        Expand-Archive -Path F:\LabSources\tools\PolicyDefinitions.zip -Destination F:\LabSources\tools
     }
-    if (!(Test-Path -Path E:\LabSources\tools\SecurityBaselineGPO.zip ))
+    if (!(Test-Path -Path F:\LabSources\tools\SecurityBaselineGPO.zip ))
     {
-        Start-BitsTransfer -Destination E:\LabSources\tools\SecurityBaselineGPO.zip -Source 'https://raw.githubusercontent.com/jkulbe-msft/azd-nestedhv-dc-rtr/refs/heads/main/infra/SecurityBaselineGPO.zip'
-        Expand-Archive -Path E:\LabSources\tools\SecurityBaselineGPO.zip -Destination E:\LabSources\tools
+        Start-BitsTransfer -Destination F:\LabSources\tools\SecurityBaselineGPO.zip -Source 'https://raw.githubusercontent.com/jkulbe-msft/azd-nestedhv-dc-rtr/refs/heads/main/infra/SecurityBaselineGPO.zip'
+        Expand-Archive -Path F:\LabSources\tools\SecurityBaselineGPO.zip -Destination F:\LabSources\tools
     }
 
     Unblock-LabSources
@@ -130,7 +130,7 @@ function Deploy-Datacenter {
 
 
     $labName = 'AZ80x'
-    $vmpath = "E:\$labname"
+    $vmpath = "F:\$labname"
 
     # $domainName = 'contoso.com'
 
@@ -232,8 +232,8 @@ function Deploy-Datacenter {
     Invoke-LabCommand -ActivityName "OUs part 2" -ComputerName DC1 -ScriptBlock { "Users","Computers","Groups" | Foreach-Object { New-ADOrganizationalUnit -Name $_ -Path "OU=Resources,DC=contoso,DC=com"} }
     Invoke-LabCommand -ActivityName "Users" -ComputerName DC1 -ScriptBlock { "User1","User2","DelegatedIpamUser","AdminInSilo" | Foreach-Object { New-ADUser -Name $_ -AccountPassword (ConvertTo-SecureString 'Somepass!' -AsPlainText -Force) -PasswordNeverExpires $true -Enabled $true -Path "OU=Users,OU=Resources,DC=contoso,DC=com"} }
     Invoke-LabCommand -ActivityName "second admin permissions" -ComputerName DC1 -ScriptBlock { Add-ADGroupMember -Identity "Domain Admins" -Members 'AdminInSilo'  }
-    Copy-LabFileItem -Path E:\LabSources\tools\PolicyDefinitions -ComputerName DC1 -DestinationFolderPath C:\Windows\Sysvol\domain\Policies
-    Copy-LabFileItem -Path E:\LabSources\tools\SecurityBaselineGPO -ComputerName DC1 -DestinationFolderPath C:\Lab
+    Copy-LabFileItem -Path F:\LabSources\tools\PolicyDefinitions -ComputerName DC1 -DestinationFolderPath C:\Windows\Sysvol\domain\Policies
+    Copy-LabFileItem -Path F:\LabSources\tools\SecurityBaselineGPO -ComputerName DC1 -DestinationFolderPath C:\Lab
     Invoke-LabCommand -ActivityName "GPO import" -ComputerName DC1 -ScriptBlock { C:\Lab\SecurityBaselineGPO\import-baselinegpo.ps1 }
     Invoke-LabCommand -ActivityName "resgister AD Schema extension" -ComputerName ADM1 -ScriptBlock { regsvr32 /s schmmgmt.dll }
     # Authentication Silo
