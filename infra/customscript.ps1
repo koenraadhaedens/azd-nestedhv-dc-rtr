@@ -19,8 +19,8 @@ New-Item -Path $vms -ItemType directory -Force
 
 $disk = Get-Disk | Where-Object PartitionStyle -Eq 'RAW'
 Initialize-Disk -Number $disk.Number
-New-Partition -DiskNumber $disk.Number -UseMaximumSize -AssignDriveLetter
-Format-Volume -DriveLetter $disk.DriveLetter -FileSystem NTFS -NewFileSystemLabel "DataDisk"
+New-Partition -DiskNumber $disk.Number -UseMaximumSize -DriveLetter F
+Format-Volume -DriveLetter F -FileSystem NTFS -NewFileSystemLabel "DataDisk"
 
 # download windows server 2022 eval version iso
 # $downloadUrl = "https://go.microsoft.com/fwlink/p/?LinkID=2195280&clcid=0x409&culture=en-us&country=US"
