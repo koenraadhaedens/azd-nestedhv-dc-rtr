@@ -1,13 +1,10 @@
 targetScope = 'resourceGroup'
 
-param tags object
-param environmentName string
-
 @description('The Windows version for Windows hyperv-host VM.')
 param windowsOSVersion string = '2022-Datacenter'
 
 @description('Size for Windows hyper-vhost VM')
-param winVmSize string = 'Standard_D8s_v3'
+param winVmSize string = 'Standard_D8s_v5'
 
 @description('Username for Windows hyperv-host VM')
 param winVmUser string
@@ -74,9 +71,12 @@ resource winhvhost 'Microsoft.Compute/virtualMachines@2019-12-01' = {
       }
       dataDisks: [
         {
-          diskSizeGB: 20
-          lun: 0
+          lun: 2
           createOption: 'Empty'
+          diskSizeGB: 256
+          managedDisk: {
+            storageAccountType: 'Premium_LRS'
+          }
         }
       ]
     }
