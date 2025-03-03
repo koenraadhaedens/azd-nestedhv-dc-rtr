@@ -107,7 +107,7 @@ function Deploy-SQLServerVM {
 function Deploy-Datacenter {
     Start-Transcript -Path "C:\Datacenter.ps1.log"
 
-    prepare for datacenter demo region install AutomatedLab for datacenter scenario
+    # prepare for datacenter demo region install AutomatedLab for datacenter scenario
     # [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
     Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
