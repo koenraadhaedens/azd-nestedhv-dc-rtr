@@ -134,7 +134,7 @@ function Deploy-Datacenter {
     }
     if (!(Test-Path -Path F:\LabSources\tools\SecurityBaselineGPO.zip ))
     {
-        Start-BitsTransfer -Destination F:\LabSources\tools\SecurityBaselineGPO.zip -Source 'https://raw.githubusercontent.com/jkulbe-msft/azd-nestedhv-dc-rtr/refs/heads/main/infra/SecurityBaselineGPO.zip'
+        Start-BitsTransfer -Destination F:\LabSources\tools\SecurityBaselineGPO.zip -Source 'https://raw.githubusercontent.com/koenraadhaedens/azd-nestedhv-dc-rtr/refs/heads/main/infra/SecurityBaselineGPO.zip'
         Expand-Archive -Path F:\LabSources\tools\SecurityBaselineGPO.zip -Destination F:\LabSources\tools
     }
 
