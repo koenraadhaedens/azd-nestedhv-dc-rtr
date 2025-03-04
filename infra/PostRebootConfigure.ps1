@@ -129,7 +129,7 @@ function Deploy-Datacenter {
     }
     if (!(Test-Path -Path F:\LabSources\tools\PolicyDefinitions.zip ))
     {
-        Start-BitsTransfer -Destination F:\LabSources\tools\PolicyDefinitions.zip -Source 'https://raw.githubusercontent.com/jkulbe-msft/azd-nestedhv-dc-rtr/refs/heads/main/infra/PolicyDefinitions.zip'
+        Start-BitsTransfer -Destination F:\LabSources\tools\PolicyDefinitions.zip -Source 'https://raw.githubusercontent.com/koenraadhaedens/azd-nestedhv-dc-rtr/refs/heads/main/infra/PolicyDefinitions.zip'
         Expand-Archive -Path F:\LabSources\tools\PolicyDefinitions.zip -Destination F:\LabSources\tools
     }
     if (!(Test-Path -Path F:\LabSources\tools\SecurityBaselineGPO.zip ))
