@@ -10,11 +10,11 @@ hooks:
 postprovision:
     windows: # Run referenced script that uses environment variables (script shown below)
       shell: pwsh
-      run: ./postprovision.ps1
+      run: ./scripts/postprovision.ps1
       interactive: true
       continueOnError: false
     posix:
       shell: sh
-      run: ./postprovision.sh
+      run: ./scripts/postprovision.sh
       interactive: true
       continueOnError: false
