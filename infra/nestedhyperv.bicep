@@ -266,7 +266,7 @@ resource winhvhostPublicIp 'Microsoft.Network/publicIPAddresses@2019-11-01' = {
 
 resource winVmStorage 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   sku: {
-    name: 'Standard_GRS'
+    name: 'Standard_LRS'
   }
   kind: 'Storage'
   name: winVmStorageName
@@ -310,3 +310,4 @@ resource customScriptExtension 'Microsoft.Compute/virtualMachines/extensions@202
 
 output Jumphost_VM_IP_address string = winhvhostPublicIp.properties.ipAddress
 output winVmUser string = winVmUser
+
