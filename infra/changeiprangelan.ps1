@@ -1,7 +1,7 @@
 # Define new configuration
 $NewSwitchName = "InternalNATSwitch"
-$NewSubnet = "192.168.100.0/24"
-$NewGateway = "192.168.100.1"
+$NewSubnet = "172.xxx.100.0/24"
+$NewGateway = "172.xxx.100.1"
 $NatName = "NewNATNetwork"
 $NewInternalIP = "192.168.100.9"
 
