@@ -3,7 +3,7 @@ $NewSwitchName = "InternalNATSwitch"
 $NewSubnet = "172.xxx.100.0/24"
 $NewGateway = "172.xxx.100.1"
 $NatName = "NewNATNetwork"
-$NewInternalIP = "192.168.100.9"
+$NewInternalIP = "172.xxx.100.9"
 
 # Remove all static NAT mappings
 Get-NetNatStaticMapping | Remove-NetNatStaticMapping -Confirm:$false
