@@ -83,6 +83,51 @@ function Deploy-DomainControllerVM {
     C:\OpsDir\7za.exe x C:\import\onpremdc1vm.zip -o"C:\virtual machines"
     Import-VM -Path "C:\virtual machines\ONPREM-DC1\Virtual Machines\292EF233-31E8-4A38-B91D-3566FCD060A8.vmcx"
     Set-VMProcessor -VMName "ONPREM-DC1" -Count 2
+````# start and rearm vm
+    # --- CONFIG ---
+    $vmName = "ONPREM-DC1"
+    $vmUser = "contoso-mct\Administrator"
+    $vmPassword = "demo!pass123"
+    $vmIP = "172.33.0.200"   
+    $securePassword = ConvertTo-SecureString $vmPassword -AsPlainText -Force
+    $cred = New-Object System.Management.Automation.PSCredential ($vmUser, $securePassword)
+
+    # --- Start the VM ---
+    Start-VM -Name $vmName
+
+    # --- Wait for VM to reach "Running" state ---
+    do {
+        Start-Sleep -Seconds 5
+        $state = (Get-VM -Name $vmName).State
+        Write-Host "VM state: $state"
+    } until ($state -eq 'Running')
+
+    # --- Wait for VM to accept PowerShell remoting ---
+    $session = $null
+    do {
+        try {
+            $session = New-PSSession -ComputerName $vmIP -Credential $cred -ErrorAction Stop
+        } catch {
+            Write-Host "Waiting for VM to accept remote session..."
+            Start-Sleep -Seconds 5
+        }
+    } until ($session)
+
+    # --- Run rearm inside the VM ---
+    Invoke-Command -Session $session -ScriptBlock {
+        slmgr /rearm
+        Write-Output "Rearm command executed."
+    }
+
+    # --- Optional: Restart VM to apply the rearm ---
+    Invoke-Command -Session $session -ScriptBlock {
+        Restart-Computer -Force
+    }
+
+    # --- Clean up session ---
+    Remove-PSSession $session
+
+
 }
 
 function Deploy-SQLServerVM {
