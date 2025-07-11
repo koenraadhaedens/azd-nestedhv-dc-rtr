@@ -55,8 +55,7 @@ function Download-Server2022EvalISO {
 function Deploy-RouterVM {
     Write-Output "Downloading and deploying Router VM..."
     # Add your script logic here
-    Write-Output "under construction"
-       Write-Output "Downloading and deploying Router VM..."
+         Write-Output "Downloading and deploying Router VM..."
     # Add your script logic here
     Write-Output "dowloading vm to c:\import folder. Please wait until the prompt returns"
   
@@ -73,8 +72,7 @@ function Deploy-RouterVM {
 function Deploy-DomainControllerVM {
     Write-Output "Downloading and deploying Router VM..."
     # Add your script logic here
-    Write-Output "under construction"
-       Write-Output "Downloading and deploying Router VM..."
+       Write-Output "Downloading and deploying DC VM..."
     # Add your script logic here
     Write-Output "dowloading vm to c:\import folder. Please wait until the prompt returns"
   
@@ -90,8 +88,7 @@ function Deploy-DomainControllerVM {
 function Deploy-SQLServerVM {
     Write-Output "Downloading and deploying Router VM..."
     # Add your script logic here
-    Write-Output "under construction"
-       Write-Output "Downloading and deploying Router VM..."
+       Write-Output "Downloading and deploying SQL VM..."
     # Add your script logic here
     Write-Output "dowloading vm to c:\import folder. Please wait until the prompt returns"
   
@@ -102,6 +99,22 @@ function Deploy-SQLServerVM {
     C:\OpsDir\7za.exe x C:\import\onpremsqlvm.zip -o"C:\virtual machines"
     Import-VM -Path "C:\virtual machines\ONPREM-SQL\Virtual Machines\8ACDFE30-D95D-43EC-B8CD-09B650BAFEEA.vmcx"
     Set-VMProcessor -VMName "ONPREM-SQL" -Count 2
+}
+
+function Deploy-AdminVM {
+    Write-Output "Downloading and deploying Admin VM..."
+    # Add your script logic here
+       Write-Output "Downloading and deploying Admin VM..."
+    # Add your script logic here
+    Write-Output "dowloading vm to c:\import folder. Please wait until the prompt returns"
+  
+    $webClient = New-Object System.Net.WebClient
+    $url = "https://sagithubdemokhd.blob.core.windows.net/public/ONPREM-ADM.zip"
+    $output = "C:\import\onpremadmvm.zip"
+    $webClient.DownloadFile($url, $output)
+    C:\OpsDir\7za.exe x C:\import\onpremadmvm.zip -o"C:\virtual machines"
+    Import-VM -Path "C:\virtual machines\ONPREM-ADM\Virtual Machines\A75548A1-A09D-4FD2-910F-CCC972B64F2E.vmcx"
+    Set-VMProcessor -VMName "ONPREM-ADM" -Count 2
 }
 
 function Deploy-Datacenter {
@@ -398,7 +411,8 @@ switch ($choice) {
     2 { Deploy-RouterVM }
     3 { Deploy-DomainControllerVM }
     4 { Deploy-SQLServerVM }
-    5 {Deploy-Datacenter}
+    5 { Deploy-AdminVM }
+    6 {Deploy-Datacenter}
     default { Write-Output "Invalid choice. Please run the script again and choose a valid option." }
 }
 '@ | Out-File -FilePath "C:\OpsDir\scenarioscript.ps1"
