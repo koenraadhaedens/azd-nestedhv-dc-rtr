@@ -5,6 +5,7 @@ Start-Transcript -Path "C:\PostRebootConfigure_log.txt"
 $ErrorActionPreference = 'SilentlyContinue'
 
 $cmdLogPath = "C:\PostRebootConfigure_log_cmd.txt"
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value * -Force
 
 
 Import-Module BitsTransfer
