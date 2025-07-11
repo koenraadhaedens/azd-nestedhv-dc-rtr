@@ -25,7 +25,9 @@ var tags = {
 resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: 'rg-${environmentName}'
   location: location
-  tags: tags
+  tags: {
+  SecurityControl: 'Ignore'
+  CostControl: 'Ignore'}
 }
 
 module hvhost './nestedhyperv.bicep' = {
