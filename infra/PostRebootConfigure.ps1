@@ -400,7 +400,8 @@ Write-Output "1) Download Windows Server 2022 Evaluation ISO"
 Write-Output "2) Download and Deploy Router VM"
 Write-Output "3) Download and Deploy Domain Controller VM"
 Write-Output "4) Download and Deploy SQL Server VM"
-Write-Output "5) Deploy full Data Center scenario (AZ-80x Demos)"
+Write-Output "5) Download and Deploy ADMIN Server VM"
+Write-Output "6) Deploy full Data Center scenario (AZ-80x Demos)"
 
 # Get user input
 $choice = Read-Host "Enter the number of your choice"
