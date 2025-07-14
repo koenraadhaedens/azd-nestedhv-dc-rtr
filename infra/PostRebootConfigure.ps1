@@ -136,6 +136,7 @@ function Deploy-DomainControllerVM {
     $vmIP = "172.33.0.200"   
     $securePassword = ConvertTo-SecureString $vmPassword -AsPlainText -Force
     $cred = New-Object System.Management.Automation.PSCredential ($vmUser, $securePassword)
+    
 
     # --- Start the VM ---
     Start-VM -Name $vmName
