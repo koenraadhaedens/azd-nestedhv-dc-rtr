@@ -4,7 +4,7 @@ param tags object
 param environmentName string
 
 @description('The Windows version for Windows hyperv-host VM.')
-param windowsOSVersion string = '2022-Datacenter'
+param windowsOSVersion string = '2025-Datacenter'
 
 @description('Size for Windows hyper-vhost VM')
 param winVmSize string = 'Standard_D8s_v5'
