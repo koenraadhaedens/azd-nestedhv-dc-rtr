@@ -7,7 +7,7 @@ param environmentName string
 param windowsOSVersion string = '2025-Datacenter'
 
 @description('Size for Windows hyper-vhost VM')
-param winVmSize string = 'Standard_D8s_v6'
+param winVmSize string = 'Standard_D8s_v5'
 
 @description('Username for Windows hyperv-host VM')
 param winVmUser string
