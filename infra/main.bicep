@@ -22,19 +22,16 @@ var tags = {
   'azd-env-name': environmentName
 }
 
-resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
+resource rg 'Microsoft.Resources/resourceGroups@2024-03-01' = {
   name: 'rg-${environmentName}'
   location: location
-  tags: {
-  SecurityControl: 'Ignore'
-  CostControl: 'Ignore'}
+  tags: tags
 }
 
 module hvhost './nestedhyperv.bicep' = {
   scope: rg
   name: 'hvhost'
   params: {
-    environmentName: environmentName
     location: location
     tags: tags
     winVmDnsPrefix: 'dns${uniqueString(subscription().subscriptionId, 'rg-${environmentName}')}hvhostvm'
@@ -44,3 +41,4 @@ module hvhost './nestedhyperv.bicep' = {
 }
 
 output winVmUser string = hvhost.outputs.winVmUser
+output Jumphost_VM_IP_address string = hvhost.outputs.Jumphost_VM_IP_address

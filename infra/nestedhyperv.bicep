@@ -1,7 +1,6 @@
 targetScope = 'resourceGroup'
 
 param tags object
-param environmentName string
 
 @description('The Windows version for Windows hyperv-host VM.')
 param windowsOSVersion string = '2025-Datacenter'
@@ -28,13 +27,13 @@ var mgmtSubnetPrefix = '10.30.10.0/24'
 var hostvnetPrefix = '10.30.0.0/16'
 var winhvhostname = 'hv-host'
 var winVmNicName = '${winhvhostname}NIC'
-var winVmStorageName = 'hvhostvm${uniqueString(resourceGroup().id)}'
 var winNsgName = 'hvHostNsg'
 var winhvhostPublicIpName = 'winhvhostnamePublicIp'
 
-resource hostvnet 'Microsoft.Network/virtualNetworks@2019-11-01' = {
+resource hostvnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {
   name: hostvnetName
   location: location
+  tags: tags
   properties: {
     addressSpace: {
       addressPrefixes: [
@@ -42,23 +41,25 @@ resource hostvnet 'Microsoft.Network/virtualNetworks@2019-11-01' = {
       ]
     }
     enableDdosProtection: false
-    enableVmProtection: false
   }
 }
 
-resource hostvnet_mgmtSubnet 'Microsoft.Network/virtualNetworks/subnets@2019-11-01' = {
+resource hostvnet_mgmtSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' = {
   parent: hostvnet
   name: mgmtSubnetName
-  location: location
   properties: {
     addressPrefix: mgmtSubnetPrefix
   }
 }
 
-resource winhvhost 'Microsoft.Compute/virtualMachines@2019-12-01' = {
+resource winhvhost 'Microsoft.Compute/virtualMachines@2024-11-01' = {
   name: winhvhostname
   location: location
+  tags: tags
   properties: {
+    securityProfile: {
+      securityType: 'Standard'
+    }
     hardwareProfile: {
       vmSize: winVmSize
     }
@@ -101,18 +102,15 @@ resource winhvhost 'Microsoft.Compute/virtualMachines@2019-12-01' = {
     diagnosticsProfile: {
       bootDiagnostics: {
         enabled: true
-        storageUri: reference(winVmStorageName, '2019-06-01').primaryEndpoints.blob
       }
     }
   }
-  dependsOn: [
-    winVmStorage
-  ]
 }
 
-resource winVmNic 'Microsoft.Network/networkInterfaces@2019-11-01' = {
+resource winVmNic 'Microsoft.Network/networkInterfaces@2024-05-01' = {
   name: winVmNicName
   location: location
+  tags: tags
   properties: {
     ipConfigurations: [
       {
@@ -135,13 +133,13 @@ resource winVmNic 'Microsoft.Network/networkInterfaces@2019-11-01' = {
     networkSecurityGroup: {
       id: winNsg.id
     }
-    primary: true
   }
 }
 
-resource winNsg 'Microsoft.Network/networkSecurityGroups@2019-11-01' = {
+resource winNsg 'Microsoft.Network/networkSecurityGroups@2024-05-01' = {
   name: winNsgName
   location: location
+  tags: tags
   properties: {
     securityRules: [
       {
@@ -159,101 +157,16 @@ resource winNsg 'Microsoft.Network/networkSecurityGroups@2019-11-01' = {
         }
       }
     ]
-    defaultSecurityRules: [
-      {
-        name: 'AllowVnetInBound'
-        properties: {
-          description: 'Allow inbound traffic from all VMs in VNET'
-          protocol: '*'
-          sourcePortRange: '*'
-          destinationPortRange: '*'
-          sourceAddressPrefix: 'VirtualNetwork'
-          destinationAddressPrefix: 'VirtualNetwork'
-          access: 'Allow'
-          priority: 65000
-          direction: 'Inbound'
-        }
-      }
-      {
-        name: 'AllowAzureLoadBalancerInBound'
-        properties: {
-          description: 'Allow inbound traffic from azure load balancer'
-          protocol: '*'
-          sourcePortRange: '*'
-          destinationPortRange: '*'
-          sourceAddressPrefix: 'AzureLoadBalancer'
-          destinationAddressPrefix: '*'
-          access: 'Allow'
-          priority: 65001
-          direction: 'Inbound'
-        }
-      }
-      {
-        name: 'DenyAllInBound'
-        properties: {
-          description: 'Deny all inbound traffic'
-          protocol: '*'
-          sourcePortRange: '*'
-          destinationPortRange: '*'
-          sourceAddressPrefix: '*'
-          destinationAddressPrefix: '*'
-          access: 'Deny'
-          priority: 65500
-          direction: 'Inbound'
-        }
-      }
-      {
-        name: 'AllowVnetOutBound'
-        properties: {
-          description: 'Allow outbound traffic from all VMs to all VMs in VNET'
-          protocol: '*'
-          sourcePortRange: '*'
-          destinationPortRange: '*'
-          sourceAddressPrefix: 'VirtualNetwork'
-          destinationAddressPrefix: 'VirtualNetwork'
-          access: 'Allow'
-          priority: 65000
-          direction: 'Outbound'
-        }
-      }
-      {
-        name: 'AllowInternetOutBound'
-        properties: {
-          description: 'Allow outbound traffic from all VMs to Internet'
-          protocol: '*'
-          sourcePortRange: '*'
-          destinationPortRange: '*'
-          sourceAddressPrefix: '*'
-          destinationAddressPrefix: 'Internet'
-          access: 'Allow'
-          priority: 65001
-          direction: 'Outbound'
-        }
-      }
-      {
-        name: 'DenyAllOutBound'
-        properties: {
-          description: 'Deny all outbound traffic'
-          protocol: '*'
-          sourcePortRange: '*'
-          destinationPortRange: '*'
-          sourceAddressPrefix: '*'
-          destinationAddressPrefix: '*'
-          access: 'Deny'
-          priority: 65500
-          direction: 'Outbound'
-        }
-      }
-    ]
   }
 }
 
-resource winhvhostPublicIp 'Microsoft.Network/publicIPAddresses@2019-11-01' = {
+resource winhvhostPublicIp 'Microsoft.Network/publicIPAddresses@2024-05-01' = {
   sku: {
     name: 'Standard'
   }
   name: winhvhostPublicIpName
   location: location
+  tags: tags
   properties: {
     publicIPAddressVersion: 'IPv4'
     publicIPAllocationMethod: 'Static'
@@ -264,41 +177,16 @@ resource winhvhostPublicIp 'Microsoft.Network/publicIPAddresses@2019-11-01' = {
   }
 }
 
-resource winVmStorage 'Microsoft.Storage/storageAccounts@2019-06-01' = {
-  sku: {
-    name: 'Standard_LRS'
-  }
-  kind: 'Storage'
-  name: winVmStorageName
-  location: location
-  properties: {
-    networkAcls: {
-      bypass: 'AzureServices'
-      defaultAction: 'Allow'
-    }
-    supportsHttpsTrafficOnly: false
-    encryption: {
-      services: {
-        file: {
-          enabled: true
-        }
-        blob: {
-          enabled: true
-        }
-      }
-      keySource: 'Microsoft.Storage'
-    }
-  }
-}
-
-resource customScriptExtension 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
+resource customScriptExtension 'Microsoft.Compute/virtualMachines/extensions@2024-11-01' = {
   name: 'customScriptExtension'
   location: location
+  tags: tags
   parent: winhvhost
   properties: {
     publisher: 'Microsoft.Compute'
     type: 'CustomScriptExtension'
     typeHandlerVersion: '1.10'
+    autoUpgradeMinorVersion: true
     settings: {
       fileUris: [
         'https://raw.githubusercontent.com/koenraadhaedens/azd-nestedhv-dc-rtr/refs/heads/main/infra/customscript.ps1'
@@ -310,4 +198,3 @@ resource customScriptExtension 'Microsoft.Compute/virtualMachines/extensions@202
 
 output Jumphost_VM_IP_address string = winhvhostPublicIp.properties.ipAddress
 output winVmUser string = winVmUser
-
