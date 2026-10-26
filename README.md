@@ -74,8 +74,9 @@ subscription.
 This addresses policies that prohibit public network access on storage accounts
 deployed in your subscription. It is **not a claim of full SFI compliance**:
 
-- The host still has an Azure-allocated Standard static public IP, used for
-  explicit outbound connectivity and optional controlled inbound access.
+- The host NIC has no public IP. A Standard NAT Gateway on `hvhostSubnet`
+  provides outbound connectivity using its own Azure-allocated Standard static
+  public IP. Default outbound access is explicitly disabled on the subnet.
   No bring-your-own IP address, custom IP prefix, or preview feature is requested.
 - RDP is denied by default. Use your organization's approved access method; do
   not add a broad Internet allow rule.
@@ -84,14 +85,39 @@ deployed in your subscription. It is **not a claim of full SFI compliance**:
   `sagithubdemokhd.blob.core.windows.net` public container, and software from
   Microsoft download endpoints and package sources. Removing the diagnostics
   account does not remove these public download dependencies.
-- If your environment also prohibits VM public IPs or access to public blob
-  endpoints, the lab needs an approved private network/egress design and private
-  artifact hosting with authentication and DNS before it can run there.
+- NAT Gateway still requires a public IP resource. If your environment prohibits
+  all public IP resources, including NAT Gateway IPs, this configuration will
+  still be blocked. It is not a workaround for tenant restrictions. If public
+  blob endpoints are blocked, private artifact hosting with authentication and
+  DNS is also required.
 - The template no longer applies `SecurityControl: Ignore` / `CostControl: Ignore`
   tags.
 - The postprovision hooks send deployment statistics to the existing Azure
   Automation webhook. The machine running `azd provision` needs outbound HTTPS
   access to that endpoint; this does not require a storage account in the lab.
+
+## Private host access and NAT Gateway
+
+The NAT Gateway is outbound-only: its public IP does not accept unsolicited
+inbound traffic and cannot be used for RDP or as a site-to-site VPN endpoint.
+Access to the VM requires an approved private path into `hostvnet`, such as an
+existing connected network or an independently provisioned Bastion deployment.
+This template does not provision that access path.
+
+Deployment outputs are `Jumphost_VM_private_IP_address` (the host's private IP)
+and `natGatewayPublicIpAddress` (outbound traffic only). These replace the former
+`Jumphost_VM_IP_address` public-IP output; update any external consumers.
+
+NAT Gateway incurs additional hourly and data-processing charges. The existing
+[site-to-site VPN demo](./demoguide-s2svpn/README.md) assumes an inbound-capable
+public endpoint and is not supported by this private-host configuration.
+
+When updating an existing host with a NIC public IP, deployment removes that
+NIC association and any active public-IP RDP session will disconnect. Arrange
+private access first. Incremental deployment leaves the old
+`winhvhostnamePublicIp` resource in place; inspect its dependencies before
+removing it manually. Existing VMs may need to be stopped/deallocated and
+started again for the subnet's default-outbound-access change to take effect.
 
 ## Retrying an older failed deployment
 
@@ -102,10 +128,12 @@ An incremental deployment does **not** delete an old storage account that was
 already created; inspect it for data and dependencies before deleting it manually.
 
 The old template also used a 2019 public-IP API. The updated template uses a
-stable newer Network API and requests an ordinary Azure-allocated public IP.
-Do not register `AllowBringYourOwnPublicIpAddress` just to deploy this lab.
-If that error persists, inspect the failed operation in the target subscription
-for the exact resource and service error:
+stable newer Network API and requests an ordinary Azure-allocated public IP
+for the NAT Gateway, not the VM.
+The template does not request BYOIP, but updating the API alone may not resolve
+`SubscriptionNotRegisteredForFeature` for `AllowBringYourOwnPublicIpAddress`.
+Inspect the failed operation in the target subscription for the exact resource
+and service error:
 
 ```sh
 az deployment operation group list --subscription <subscription-id> --resource-group rg-<environment-name> --name hvhost --query "[?properties.provisioningState=='Failed'].properties.{Target:targetResource, Error:statusMessage}" --output json
@@ -118,6 +146,27 @@ error's Azure Portal link:
 ```sh
 az deployment operation sub list --subscription <subscription-id> --name <deployment-name> --query "[?properties.provisioningState=='Failed'].properties.{Target:targetResource, Error:statusMessage}" --output json
 ```
+
+If Azure continues to require that feature, ask your subscription administrator
+to approve and perform the registration. This changes subscription configuration;
+it is not performed automatically by this template:
+
+```sh
+az feature register --subscription <subscription-id> --namespace Microsoft.Network --name AllowBringYourOwnPublicIpAddress
+az feature show --subscription <subscription-id> --namespace Microsoft.Network --name AllowBringYourOwnPublicIpAddress --query properties.state --output tsv
+```
+
+Wait until the feature state is `Registered`, then refresh the provider:
+
+```sh
+az provider register --subscription <subscription-id> --namespace Microsoft.Network
+az provider show --subscription <subscription-id> --namespace Microsoft.Network --query registrationState --output tsv
+```
+
+Once the provider is `Registered`, retry `azd provision`. If registration is
+unavailable, remains pending, or does not resolve the error, open an Azure Support
+request with the failed operation and correlation ID. Do not bypass organizational
+restrictions on feature registration or public IPs.
 
 ## Installation Steps
 
@@ -153,13 +202,17 @@ az deployment operation sub list --subscription <subscription-id> --name <deploy
 
 - **Username:** `adminuser`
 - **Password:** (Provided during provisioning)
+- **Address:** `Jumphost_VM_private_IP_address` from the deployment outputs.
+  Connect through your approved private access path, not the NAT public IP.
 
 ## Post Installation
 
 Once the setup is complete:
-- If approved by your organization, add an NSG rule allowing only your client IP
+- If approved by your organization, add an NSG rule allowing only your private
+  management source IP or CIDR
   at a priority above the default RDP deny rule (a number below 1000), or use
-  Just-in-time access.
+  Just-in-time access where supported. An NSG rule does not create private
+  connectivity.
 - Login to the VM.
 
 

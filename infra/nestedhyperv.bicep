@@ -15,9 +15,6 @@ param winVmUser string
 @secure()
 param winVmPassword string
 
-@description('DNS Label for Windows hyperv-host VM.')
-param winVmDnsPrefix string
-
 @description('Location for all resources.')
 param location string = resourceGroup().location
 
@@ -28,7 +25,8 @@ var hostvnetPrefix = '10.30.0.0/16'
 var winhvhostname = 'hv-host'
 var winVmNicName = '${winhvhostname}NIC'
 var winNsgName = 'hvHostNsg'
-var winhvhostPublicIpName = 'winhvhostnamePublicIp'
+var natGatewayName = 'hvHostNatGateway'
+var natGatewayPublicIpName = 'hvHostNatPublicIp'
 
 resource hostvnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {
   name: hostvnetName
@@ -49,6 +47,10 @@ resource hostvnet_mgmtSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-
   name: mgmtSubnetName
   properties: {
     addressPrefix: mgmtSubnetPrefix
+    defaultOutboundAccess: false
+    natGateway: {
+      id: hostNatGateway.id
+    }
   }
 }
 
@@ -117,9 +119,6 @@ resource winVmNic 'Microsoft.Network/networkInterfaces@2024-05-01' = {
         name: 'winhvhostIpConfig'
         properties: {
           privateIPAllocationMethod: 'Dynamic'
-          publicIPAddress: {
-            id: winhvhostPublicIp.id
-          }
           subnet: {
             id: hostvnet_mgmtSubnet.id
           }
@@ -160,20 +159,33 @@ resource winNsg 'Microsoft.Network/networkSecurityGroups@2024-05-01' = {
   }
 }
 
-resource winhvhostPublicIp 'Microsoft.Network/publicIPAddresses@2024-05-01' = {
+resource natGatewayPublicIp 'Microsoft.Network/publicIPAddresses@2024-05-01' = {
   sku: {
     name: 'Standard'
   }
-  name: winhvhostPublicIpName
+  name: natGatewayPublicIpName
   location: location
   tags: tags
   properties: {
     publicIPAddressVersion: 'IPv4'
     publicIPAllocationMethod: 'Static'
+  }
+}
+
+resource hostNatGateway 'Microsoft.Network/natGateways@2024-05-01' = {
+  name: natGatewayName
+  location: location
+  tags: tags
+  sku: {
+    name: 'Standard'
+  }
+  properties: {
     idleTimeoutInMinutes: 4
-    dnsSettings: {
-      domainNameLabel: toLower(winVmDnsPrefix)
-    }
+    publicIpAddresses: [
+      {
+        id: natGatewayPublicIp.id
+      }
+    ]
   }
 }
 
@@ -196,5 +208,8 @@ resource customScriptExtension 'Microsoft.Compute/virtualMachines/extensions@202
   }
 }
 
-output Jumphost_VM_IP_address string = winhvhostPublicIp.properties.ipAddress
+@description('Private host address; requires an approved private network access path.')
+output Jumphost_VM_private_IP_address string = winVmNic.properties.ipConfigurations[0].properties.privateIPAddress
+@description('Outbound-only NAT address; cannot be used for inbound RDP or VPN connections.')
+output natGatewayPublicIpAddress string = natGatewayPublicIp.properties.ipAddress
 output winVmUser string = winVmUser

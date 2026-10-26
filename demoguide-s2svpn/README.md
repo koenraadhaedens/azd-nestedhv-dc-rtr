@@ -1,5 +1,12 @@
 # Demoguide: Creating a Site-to-Site VPN Tunnel
 
+> The current infrastructure template deploys a private host behind an
+> outbound-only NAT Gateway. This guide assumes an inbound-capable public
+> endpoint on the nested hypervisor and does not work with that configuration.
+> Do not use `natGatewayPublicIpAddress` as the Local Network Gateway endpoint.
+> The `infra/addloclnetwgatewayforall.ps1` helper skips hosts without a NIC public
+> IP. An approved inbound-capable VPN design is required before using this demo.
+
 ## Step-by-Step Instructions
 
 ### Introduction

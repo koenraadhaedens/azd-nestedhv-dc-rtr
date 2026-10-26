@@ -34,11 +34,11 @@ module hvhost './nestedhyperv.bicep' = {
   params: {
     location: location
     tags: tags
-    winVmDnsPrefix: 'dns${uniqueString(subscription().subscriptionId, 'rg-${environmentName}')}hvhostvm'
     winVmUser: 'adminuser'
     winVmPassword: winVMPassword //no value specified, so user will get prompted for it during deployment
   }
 }
 
 output winVmUser string = hvhost.outputs.winVmUser
-output Jumphost_VM_IP_address string = hvhost.outputs.Jumphost_VM_IP_address
+output Jumphost_VM_private_IP_address string = hvhost.outputs.Jumphost_VM_private_IP_address
+output natGatewayPublicIpAddress string = hvhost.outputs.natGatewayPublicIpAddress

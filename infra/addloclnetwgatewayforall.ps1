@@ -29,6 +29,11 @@ foreach ($rg in $resourceGroups) {
             if ($nic) {
                 $pipId = $nic.IpConfigurations[0].PublicIpAddress.Id
 
+                if (-not $pipId) {
+                    Write-Warning "VM 'hv-host' in $rgName has no NIC public IP. The private-host NAT Gateway configuration cannot be used as an inbound VPN endpoint. Skipping Local Network Gateway creation."
+                    continue
+                }
+
                 # Extract name and resource group from the public IP resource ID
                 $pipParts = $pipId -split "/"
                 $pipName = $pipParts[-1]
