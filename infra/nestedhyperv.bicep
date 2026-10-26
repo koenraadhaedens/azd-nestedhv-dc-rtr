@@ -2,8 +2,8 @@ targetScope = 'resourceGroup'
 
 param tags object
 
-@description('The Windows version for Windows hyperv-host VM.')
-param windowsOSVersion string = '2025-Datacenter'
+@description('Windows image SKU for the Hyper-V host. Must match the VM size hypervisor generation; the default size requires a Generation 2 image.')
+param windowsOSVersion string = '2025-datacenter-g2'
 
 @description('Size for Windows hyper-vhost VM')
 param winVmSize string = 'Standard_D8s_v7'

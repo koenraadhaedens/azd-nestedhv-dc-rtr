@@ -56,7 +56,10 @@ You can also use Azure Cloud Shell where AZD is preinstalled
  az vm list-skus --resource-type virtualMachines --all --query "[?name=='Standard_D8s_v7'].{Name:name, Locations:locations, Restrictions:restrictions}" --output json
  ```
 
-The template defaults to Windows Server 2025 Datacenter and `Standard_D8s_v7`.
+The template defaults to Windows Server 2025 Datacenter Generation 2
+(`MicrosoftWindowsServer:WindowsServer:2025-datacenter-g2:latest`) and
+`Standard_D8s_v7`. This VM size requires a Generation 2 image; the
+`2025-datacenter` SKU is Generation 1 and cannot boot on it.
 Check regional availability, subscription restrictions, vCPU quota, and nested
 virtualization support before deployment. The VM explicitly uses `Standard`
 security rather than relying on the API's default security type.
